@@ -1,62 +1,65 @@
 import { useState,useEffect } from "react";
 import TextField from "../components/ui/TextField";
 import { Link} from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser } from '../store/authSlice';
 const Register = () => {
-    const [email, setEmail] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [phone, setPhone] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [password, setPassword] = useState('');
-    const handleSetEmail =(data) => {
-        setEmail(data)
+    const dispatch = useDispatch();
+    const {loading, error, user} = useSelector((state)=>state.auth);
+    const [formData, setFormData] = useState({
+        email: '',
+        firstName: '',
+        lastName: '',
+        phone: '',
+        password: '',
+        confirmPassword: '',
+    });
+    const handleChange = (e, name)=>{
+        setFormData({
+            ...formData,
+            [name]: e
+        })
     }
-    const handleSetFirstName =(data) => {
-        setFirstName(data)
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if(formData.password !== formData.confirmPassword){
+            alert('passwrods dont match')
+            return;
+        }
+        dispatch(registerUser(formData))
     }
-    const handleSetLastName =(data) => {
-        setLastName(data)
-    }
-    const handleSetPhone = (data) => {
-        setPhone(data);
-    }
-    const handleSetPassword = (data) => {
-        setPassword(data);
-    }
-    const handleSetConfirmPassword = (data) => {
-        setConfirmPassword(data);
-    }
-    const formData = [
-        {name: 'Email', setInput: handleSetEmail, isPassword: false},
-        {name: 'Phone', setInput: handleSetPhone, isPassword: false},
-        {name: 'First Name', setInput: handleSetFirstName, isPassword: true},
-        {name: 'Last Name', setInput: handleSetLastName, isPassword: true},
-        {name: 'Password', setInput: handleSetPassword, isPassword: true},
-        {name: 'Confirm Password', setInput: handleSetConfirmPassword, isPassword: true},
+    const registerData = [
+        {name: 'email',placeHolder: 'Email', isPassword: false},
+        {name: 'phone',placeHolder: 'Phone', isPassword: false},
+        {name: 'firstName',placeHolder: 'First Name',  isPassword: false},
+        {name: 'lastName',placeHolder: 'Last Name', isPassword: false},
+        {name: 'password',placeHolder: 'Password',  isPassword: true},
+        {name: 'confirmPassword',placeHolder: 'Confirm Password', isPassword: true},
     ];
     useEffect(() => {
-        console.log(email);
-        console.log(phone);
-        console.log(firstName);
-        console.log(lastName);
-        console.log(confirmPassword);
-        console.log(password);
-    });
+        console.log(formData)
+    })
+    // const handleRegister=(e) => {
+    //     e.preventDefault();
+    //     dispatch(registerUser({email: formData.email, firstName: formData.firstName, 
+    //         lastName: formData.lastName, phone: formData.phone, password: formData.password}))
+    //     console.log()
+    // }
     return (
     <>
         <div className="form-page register">
             <h3>
                 <div>Register</div>
             </h3>
-            <form>
-                {formData.map((data,i)=>{
-                   return <TextField name={data.name} setInput={data.setInput} isPassword={data.isPassword} key={i}/>
+            <form onSubmit={handleSubmit}>
+                {registerData.map((data,i)=>{
+                   return <TextField placeHolder={data.placeHolder} name={data.name} setInput={handleChange} isPassword={data.isPassword} key={i}/>
                 })}  
+                <div className="form-actions">
+                    <button type="submit">Submit</button>
+                    <button><Link to="/">Cancel</Link></button>
+                </div>
             </form>
-            <div className="form-actions">
-                <button>Submit</button>
-                <button><Link to="/">Cancel</Link></button>
-            </div>
         </div>
     </>
     )

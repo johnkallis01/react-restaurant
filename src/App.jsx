@@ -5,7 +5,9 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NoPage from "./pages/NoPage";
-import './assets/styles.css'
+import './assets/styles.css';
+import { Provider } from 'react-redux';
+import store from './store/store';
 export default function App(){
     return(
         <BrowserRouter>
@@ -21,4 +23,9 @@ export default function App(){
     )
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+root.render(
+    <Provider store={store}>
+       <App /> 
+    </Provider>
+
+);

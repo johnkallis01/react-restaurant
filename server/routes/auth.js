@@ -1,11 +1,12 @@
 import express from 'express';
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
 const router = express.Router();
 
 router.post('/register', async (req,res)=>{
+    console.log('register')
     const {firstName, lastName, phone, email, password} = req.body;
     try{
         const userExists = await User.findOne({email});
@@ -31,3 +32,4 @@ router.post('/login', async (req,res)=>{
         res.status(500).json(err,{message: 'err not found'})
     }
 })
+export default router;

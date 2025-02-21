@@ -12,8 +12,8 @@ const Login = () => {
         setPassword(data);
     }
     const formData = [
-        {name: 'Login', setInput: handleSetLogin, isPassword: false},
-        {name: 'Password', setInput: handleSetPassword, isPassword: true}
+        {placeHolder: 'Login', name: 'login', setInput: handleSetLogin, isPassword: false},
+        {placeHolder: 'Password',name: 'password', setInput: handleSetPassword, isPassword: true}
     ];
     useEffect(() => {
         console.log(login);
