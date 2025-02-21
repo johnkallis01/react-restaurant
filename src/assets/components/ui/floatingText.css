@@ -1,0 +1,62 @@
+.floating-text{
+    /* background-color: red; */
+    font-size: 1rem;
+    height: 2.3rem;
+    width: 10rem;
+    position: relative;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: flex-end; */
+}
+.floating-text input{
+    position: absolute;
+    bottom: 0;
+    width: 10rem;
+    height: 1.7rem;
+    font-size: 1rem;
+    border: 2px solid rgb(96, 97, 97);
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-top: 0.3rem;
+
+}
+.floating-text label{
+    position: absolute;
+    left: 0.4rem;
+    bottom: 0.4rem;
+    font-size: 0.8rem;
+    transition: 0.2s ease;
+}
+.floating-text input:placeholder-shown + label{
+    position: absolute;
+    cursor: text;
+    color: #aaaa;
+    transition: 0.2s ease;
+    /* background-color: yellow; */
+    height: 1rem;
+}
+.floating-text input:focus + label,
+.floating-text input:not(:placeholder-shown) + label {
+    top: 0rem;
+    left: 0.5rem;
+    background-color: white;
+    height: 1rem;
+    color: black;
+}
+.floating-text input:-webkit-autofill,
+.floating-text input:-webkit-autofill:hover,
+.floating-text input:-webkit-autofill:focus,
+.floating-text input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+}
+.eye-button{
+    cursor: pointer;
+    position: absolute;
+    right: 0.3rem;
+    top: 1rem;
+    color: rgb(62, 60, 60);
+    z-index: 100;
+}
+input.invalid{
+    border-color: red;
+}
