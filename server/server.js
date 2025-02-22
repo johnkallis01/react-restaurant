@@ -6,7 +6,6 @@ import authRoutes from './routes/auth.js';
 const corsOptions = {
     origin: ["http://localhost:5173"]
 }
-// import ViteExpress from 'vite-express';
 const app = express();
 
 app.use(cors(corsOptions));
@@ -31,9 +30,6 @@ connectDB();
 app.get('/', (req, res)=>{
     res.send("connected to server")
 });
-app.get('/api', (req, res)=>{
-    res.json({"list": ['what', 'the', 'fuck']})
-})
 // app.use((req, res, next) => {
 //     console.log('Received Request:', req.method, req.url);
 //     console.log('Headers:', req.headers);

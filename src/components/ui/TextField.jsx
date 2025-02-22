@@ -3,17 +3,18 @@ import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js';
 import '../../assets/components/ui/floatingText.css';
 import { useState, useRef } from "react";
 import PropTypes from 'prop-types';
-
-const TextField = ({ name, setInput, isPassword, placeHolder }) => {
-    const [isOpen, setIsOpen] = useState(false); // Default state to false, meaning the password is hidden initially
-    const inputRef = useRef(null)
+const TextField = ({ name, setInput, isPassword, placeHolder, rule }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [isValid, setIsValid] = useState(true);
+    const inputRef = useRef(null);
+    const handleCheckIsValid = (e) => {
+        rule ? rule.test(e.target.value) ? setIsValid(true) : setIsValid(false) : null;
+    }
     const handleIsOpen = () => {
-        setIsOpen(!isOpen); // Toggle the visibility of the password
+        setIsOpen(!isOpen);
     };
     const handleInput = (e, name) => {
-        console.log(name)
-        console.log(e.target.value);
-        setInput(e.target.value, name); // Update the input value in the parent component
+        rule ? rule.test(e.target.value) ? setInput(e.target.value, name) : null : setInput(e.target.value, name);
     };
     const handleClick = () => {
         inputRef.current.focus()
@@ -24,16 +25,17 @@ const TextField = ({ name, setInput, isPassword, placeHolder }) => {
                 ref={inputRef}
                 placeholder=""
                 name={name}
-                style={{ paddingRight: isPassword ? '1.4rem' : '0' }}
-                type={isPassword && !isOpen ? 'password' : 'text'} // Change input type based on isOpen state
+                style={{ paddingRight: isPassword ? '1.4rem' : '0' , border: isValid ? null: '1px solid red'}}
+                type={isPassword && !isOpen ? 'password' : 'text'}
                 onChange={(e)=>handleInput(e,name)}
+                onBlur={handleCheckIsValid}
             />
             <label onClick={handleClick}>{placeHolder}</label>
             {isPassword && (
                 <Icon
                     className="eye-button"
                     onClick={handleIsOpen}
-                    path={isOpen ? mdiEyeOutline : mdiEyeOffOutline} // Toggle icon based on isOpen state
+                    path={isOpen ? mdiEyeOutline : mdiEyeOffOutline}
                     size={0.75}
                 />
             )}
@@ -46,5 +48,6 @@ TextField.propTypes = {
     type: PropTypes.string.isRequired,
     setInput: PropTypes.func.isRequired,
     isPassword: PropTypes.bool,
+    rule: PropTypes.object,
 }
 export default TextField;

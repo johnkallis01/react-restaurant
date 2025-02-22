@@ -1,5 +1,4 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-// import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/api/auth';
 
@@ -15,8 +14,15 @@ export const registerUser = createAsyncThunk('auth/register', async (userData, {
         });
         const data = await response.json();
         console.log(data)
-        console.log('registered')
-        // return data;
+        if(data?.message) alert(data.message);
+        else window.location.href='/';
+        // data ? console.log('registered') : console.log('not registered');
+        // data ? window.location.href='/' : window.location.href='/register'
+        // if(data){
+        //     window.location.href='/'
+        // }else{
+        //     window.location.href='/register'
+        // }
     }catch(err){
         return rejectWithValue(err.response.data?.message||'registeration failed');
     }
@@ -32,9 +38,9 @@ export const loginUser = createAsyncThunk('auth/login', async (userData, {reject
             body: JSON.stringify(userData),
         });
         const data = await response.json();
-        console.log(data)
-        console.log('logged in')
-        // return data;
+        if(data.token){
+            window.location.href='/';
+        }
     }catch(err){
         return rejectWithValue(err.response.data?.message||'registeration failed');
     }

@@ -30,7 +30,7 @@ router.post('/login', async (req,res)=>{
         if(!user) return res.status(400).json({message: 'login not found'});
         const isFound = await bcrypt.compare(password, user.password);
         // console.log(isFound)
-        if(!isFound) return res.status(401).json({message: 'invalid password'});
+        if(!isFound) return res.status(401).json({message: 'invalid passwords'});
         console.log('found')
         console.log(SECRET_KEY)
         // {_id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, phone: user.phone})

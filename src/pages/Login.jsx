@@ -17,7 +17,7 @@ const Login = () => {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(loginUser({email: login, password}))
+        dispatch(loginUser({email: login, password}));
     }
     const formData = [
         {placeHolder: 'Login', name: 'login', setInput: handleSetLogin, isPassword: false},
