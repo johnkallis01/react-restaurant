@@ -3,6 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
+
 const corsOptions = {
     origin: ["http://localhost:5173"]
 }
@@ -10,8 +11,9 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-dotenv.config({path: '../.env'});
+dotenv.config();
 const connectDB = async () => {
+    // console.log(process.env)
     try{
         // eslint-disable-next-line no-undef
         await mongoose.connect(process.env.MONGO_DB_URI,{

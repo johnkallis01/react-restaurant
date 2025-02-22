@@ -5,6 +5,7 @@ import User from '../models/User.js';
 import dotenv from 'dotenv';
 dotenv.config();
 const router = express.Router();
+// eslint-disable-next-line no-undef
 const SECRET_KEY=process.env.JWT_SECRET;
 router.post('/register', async (req,res)=>{
     console.log('register')
@@ -31,8 +32,8 @@ router.post('/login', async (req,res)=>{
         const isFound = await bcrypt.compare(password, user.password);
         // console.log(isFound)
         if(!isFound) return res.status(401).json({message: 'invalid passwords'});
-        console.log('found')
-        console.log(SECRET_KEY)
+        // console.log('found')
+        // console.log(SECRET_KEY)
         // {_id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, phone: user.phone})
         const token = jwt.sign({
             _id: user._id,
@@ -40,7 +41,7 @@ router.post('/login', async (req,res)=>{
              email: user.email, 
              phone: user.phone}, 
              SECRET_KEY, {expiresIn: '1h'});
-        console.log(token)
+        // console.log(token)
         res.status(202).json({token, user});
         // console.log(token)
         // return {token, user:{_id: user._id, name: user.lastName + ',' + user.firstName, email: user.email, phone: user.phone}};

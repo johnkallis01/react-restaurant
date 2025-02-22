@@ -39,6 +39,7 @@ export const loginUser = createAsyncThunk('auth/login', async (userData, {reject
         });
         const data = await response.json();
         if(data.token){
+            localStorage.setItem('token', data.token)
             window.location.href='/';
         }
     }catch(err){
