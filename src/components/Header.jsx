@@ -2,15 +2,15 @@ import { Link} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 const Header = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const token = localStorage.getItem('token');
     const handleLogout = () => {
         localStorage.clear();
         setIsLoggedIn(false);
     }
     useEffect(() => {
-        const token = localStorage.getItem('token');
         if(token) setIsLoggedIn(true);
         else setIsLoggedIn(false)
-    }, [isLoggedIn]);
+    }, [token]);
     return (
     <>
         <header>

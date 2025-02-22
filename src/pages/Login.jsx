@@ -35,7 +35,7 @@ const Login = () => {
             </h3>
             <form onSubmit={handleSubmit}>
                 {formData.map((data,i)=>{
-                   return <TextField name={data.name} setInput={data.setInput} isPassword={data.isPassword} key={i}/>
+                   return <TextField placeHolder={data.placeHolder} name={data.name} setInput={data.setInput} isPassword={data.isPassword} key={i}/>
                 })} 
                 <div className="form-actions">
                     <button type="submit">Submit</button>
