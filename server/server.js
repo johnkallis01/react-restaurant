@@ -4,11 +4,11 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 
-const corsOptions = {
-    origin: ["http://localhost:5173"]
-}
+// const corsOptions = {
+//     origin: ["http://localhost:5173"]
+// }
 const app = express();
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 dotenv.config();
