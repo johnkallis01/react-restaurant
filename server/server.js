@@ -7,11 +7,10 @@ const corsOptions = {
     origin: ["http://localhost:5173"]
 }
 const app = express();
-
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-dotenv.config();
+dotenv.config({path: '../.env'});
 const connectDB = async () => {
     try{
         // eslint-disable-next-line no-undef
