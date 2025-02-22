@@ -3,10 +3,15 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
+const corsOptions = {
+    origin: ["http://localhost:5173"]
+}
+// import ViteExpress from 'vite-express';
 const app = express();
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 dotenv.config();
 const connectDB = async () => {
     try{
@@ -25,9 +30,18 @@ const connectDB = async () => {
 connectDB();
 app.get('/', (req, res)=>{
     res.send("connected to server")
+});
+app.get('/api', (req, res)=>{
+    res.json({"list": ['what', 'the', 'fuck']})
 })
-app.listen('5000', () => {
-    console.log('server is running on port 5000')
-})
+// app.use((req, res, next) => {
+//     console.log('Received Request:', req.method, req.url);
+//     console.log('Headers:', req.headers);
+//     console.log('Body:', req.body);
+//     next();
+// });
+app.listen('8080', () => {
+    console.log('server is running on port 8080')
+});
 
 app.use('/api/auth', authRoutes);

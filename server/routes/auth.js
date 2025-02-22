@@ -2,9 +2,10 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
-
+import dotenv from 'dotenv';
+dotenv.config();
 const router = express.Router();
-
+const SECRET_KEY=process.env.JWT_SECRET;
 router.post('/register', async (req,res)=>{
     console.log('register')
     const {firstName, lastName, phone, email, password} = req.body;
@@ -13,23 +14,39 @@ router.post('/register', async (req,res)=>{
         if(userExists) return res.status(400).json({message: 'user exisits'});
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({firstName, lastName, email, phone, password: hashedPassword});
-        res.status(201).json({_id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, phone: user.phone, })
+        res.status(201).json({_id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, phone: user.phone})
     }catch (error){
         res.status(500).json(error,{message: "user didn't register"})
     }
 });
 router.post('/login', async (req,res)=>{
+    console.log("LOGIN ROUTER FUNC");
+    // console.log(req.body)
     const {email, password} = req.body;
+    // console.log(email)
     try{
         const user = await User.findOne({email});
+        // console.log(user)
         if(!user) return res.status(400).json({message: 'login not found'});
         const isFound = await bcrypt.compare(password, user.password);
-        if(!isFound) return res.status(400).json({message: 'invalid password'});
-
-        const token = jwt.sign({_id: user._id, name: user.lastName + ',' + user.firstName, email: user.email, phone: user.phone});
-        res.json({token, user:{_id: user._id, name: user.lastName + ',' + user.firstName, email: user.email, phone: user.phone}});
+        // console.log(isFound)
+        if(!isFound) return res.status(401).json({message: 'invalid password'});
+        console.log('found')
+        console.log(SECRET_KEY)
+        // {_id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, phone: user.phone})
+        const token = jwt.sign({
+            _id: user._id,
+             name: user.lastName + ',' + user.firstName, 
+             email: user.email, 
+             phone: user.phone}, 
+             SECRET_KEY, {expiresIn: '1h'});
+        console.log(token)
+        res.status(202).json({token, user});
+        // console.log(token)
+        // return {token, user:{_id: user._id, name: user.lastName + ',' + user.firstName, email: user.email, phone: user.phone}};
     } catch (err){
-        res.status(500).json(err,{message: 'err not found'})
+        console.error('login error', err)
+        res.status(500).json({message: 'err not found',error: err})
     }
 })
 export default router;

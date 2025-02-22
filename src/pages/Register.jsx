@@ -1,11 +1,11 @@
 import { useState,useEffect } from "react";
 import TextField from "../components/ui/TextField";
 import { Link} from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { registerUser } from '../store/authSlice';
 const Register = () => {
     const dispatch = useDispatch();
-    const {loading, error, user} = useSelector((state)=>state.auth);
+    // const {user} = useSelector((state)=>state.auth);
     const [formData, setFormData] = useState({
         email: '',
         firstName: '',
