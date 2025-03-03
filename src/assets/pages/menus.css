@@ -1,0 +1,26 @@
+.menu-tabs{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    overflow-x: scroll;
+    scrollbar-width: none;
+    padding: 0.5rem 1rem;
+    gap: 1rem;
+}
+.menu-tabs ul{
+    /* padding: 0.5rem; */
+    display: flex;
+    flex-direction: row;
+
+    /* gap: 1rem; */
+}
+.menu-tabs li{
+    cursor: pointer;
+    text-wrap: nowrap;
+}
+@media(max-width: 560px){
+    .menu-tabs{
+        gap: 0.5rem;
+        font-size: 0.8rem;
+    }
+}

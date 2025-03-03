@@ -1,7 +1,7 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import User from '../models/User.model.js';
 import dotenv from 'dotenv';
 dotenv.config();
 const router = express.Router();
@@ -49,5 +49,5 @@ router.post('/login', async (req,res)=>{
         console.error('login error', err)
         res.status(500).json({message: 'err not found',error: err})
     }
-})
+});
 export default router;

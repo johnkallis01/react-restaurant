@@ -1,44 +1,79 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 html{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 16px;
+    background-color: crimson;
+    overflow-x: hidden;
+}
+.app-container{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    height: 100%;
+    min-width: 100vw;
+    width: 100%;
+    /* background-color: blueviolet; */
 }
 body{
-    margin: 0;
-}
-main{
     display: flex;
-    justify-content: center;
     flex-direction: column;
-    align-items: center;
-    min-height: 25rem;
+    background-color: rgb(50, 189, 143);
+    min-height: 100vh;
+    height: 100%;
+    min-width: 100vw;
+    width: 100vw;
+    position: relative;
+    /* width: 100vw; */
+    /* width: 100vw; */
+    /* overflow-x: hidden; */
+    padding: 0;
+    
+}
+main {
+    flex: 1;
+    flex-grow: 1;
+    background-color: whitesmoke;
+    max-width: 88rem;
+    min-height: 90vh;
+    width: 92vw;
+    margin: 0 auto;
+    height: 100%;
+    overflow: hidden;
+    
 }
 a{
     text-decoration: none;
     color: black;
 }
-header{
-    /* box-sizing: border-box;
-    border: 1px solid green; */
-    padding: 0;
+ul{
+    list-style: none;
+}
+header {
+    color: white;
+    text-align: center;
+    font-size: 1.5rem;
+    height: 2rem;
+    width: 100%;
+    min-width: 100vw;
+    z-index: 1000;
     background-color: rgb(122, 203, 215);
 }
-header nav{
-    /* border: 1px solid blue; box-sizing: border-box; */
-    margin: 0;
-    padding: 0;
-}
 header nav ul{
-    list-style: none;
     display: flex;
     justify-content: space-between;
-    /* border: 1px solid yellow;
-    box-sizing: border-box; */
-    margin: 0;
-    padding: 0;
+    white-space: collapse;
 }
 header nav ul li{
-    padding: 0 0.3rem;
     cursor: pointer;
+    margin: 0;
+    padding: 0 1rem;
+    text-wrap: nowrap;
+    text-align: center;
+    text-overflow: ellipsis;
 }
 header nav ul li:hover{
     background-color: rgb(102, 169, 180);
@@ -46,19 +81,24 @@ header nav ul li:hover{
 .link-group{
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    /* gap: 10px; */
+}
+.link-group a{
+    color: white;
 }
 .link-group.left{
     padding-left: 0.6rem;
 }
 .link-group.right{
-    padding-right: 0.6rem;
+    padding-right: 1.6rem;
 }
-footer{
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
     width: 100%;
-    box-sizing: border-box;
-    border: 1px solid green;
-    padding: 0.5rem;
 }
 .form-page{
     display: flex;
@@ -101,4 +141,41 @@ footer{
     background-color: rgb(197, 204, 210);
     border-radius: 0.2rem;
     padding: 0.1rem 0.2rem;
+}
+.btn{
+    background-color: inherit;
+    padding: 0.3rem;
+    border-radius: 0.2rem;
+}
+.btn.qty{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.1rem 0.4rem;
+    border-radius: 1rem;
+}
+.qty{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 1.5rem;
+    margin-top: 0.2rem;
+    justify-content: center;
+}
+.qty-title{
+    margin: 0 0.2rem;
+}
+/***
+    window breaks
+***/
+@media(max-width: 800px){
+    main{
+        width: 100vw;
+    }
+}
+@media(max-width: 600px){
+    header nav ul li{
+        padding: 0.4rem;
+        font-size: 1rem;
+    }
 }

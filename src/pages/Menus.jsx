@@ -1,0 +1,35 @@
+import { useEffect, useState } from 'react';
+// import {useDispatch, useSelector } from 'react-redux';
+// import {fetchMenus} from './menuSlice';
+import {useDispatch, useSelector } from 'react-redux';
+import {fetchMenus} from '../store/menuSlice';
+import DisplayMenu from '../components/DisplayMenu';
+import '../assets/pages/menus.css';
+const Menus = () => {
+
+    const dispatch = useDispatch();
+    // const {menus, loading, error} = useSelector((state)=>state.menus);
+    const {menus, error} = useSelector((state)=>state.menus);
+    const [index, setIndex] = useState(0);
+    const handleSetIndex = (index) => {
+        setIndex(index);
+    }
+    useEffect(() => {
+        dispatch(fetchMenus());
+    }, [dispatch]);
+    // if(loading) return <p>Loading ....</p>;
+    if(error) return <p>Error: {error}</p>
+
+    return (
+        <div className='display-menu'>
+            <ul className="menu-tabs">
+                {menus.map((menu, i)=>(
+                    <li onClick={() => handleSetIndex(i)} key={menu._id} style={{borderBottom: index===i ? '1px solid green' : 'none'}}> {menu.name}</li>
+                ))}
+            </ul>
+            {menus[index] ? <DisplayMenu menu={menus[index]} order={true}/> : <p>menu not found</p>}
+        </div>
+
+    )
+}
+export default Menus;

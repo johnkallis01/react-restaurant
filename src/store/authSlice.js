@@ -16,13 +16,6 @@ export const registerUser = createAsyncThunk('auth/register', async (userData, {
         console.log(data)
         if(data?.message) alert(data.message);
         else window.location.href='/';
-        // data ? console.log('registered') : console.log('not registered');
-        // data ? window.location.href='/' : window.location.href='/register'
-        // if(data){
-        //     window.location.href='/'
-        // }else{
-        //     window.location.href='/register'
-        // }
     }catch(err){
         return rejectWithValue(err.response.data?.message||'registeration failed');
     }
@@ -57,8 +50,7 @@ const authSlice = createSlice({
         }).addCase(registerUser.fulfilled, (state,action)=>{
             state.loading=false;
             state.error = action.payload;
-        })
-        .addCase(loginUser.pending, (state)=>{
+        }).addCase(loginUser.pending, (state)=>{
             state.loading=true;
             state.error=null;
         }).addCase(loginUser.rejected, (state,action)=>{

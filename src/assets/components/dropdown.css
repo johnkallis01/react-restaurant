@@ -1,0 +1,19 @@
+.dropdown-menu{
+    /* border: 1px solid;
+    box-sizing: border-box; */
+    position: absolute;
+    top: 2rem;
+    color: black;
+    right: calc(8rem);
+    width: 6.6rem;
+    background-color: azure;
+    z-index: 12;
+    cursor: pointer;
+}
+li{
+    text-align: center;
+    text-wrap: nowrap;
+}
+.edit-menu:hover{
+    background-color: rgb(172, 227, 227);
+}

@@ -2,8 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import authRoutes from './routes/auth.js';
-
+import authRoutes from './api/auth.js';
+import menuRoutes from './api/menus.js';
 // const corsOptions = {
 //     origin: ["http://localhost:5173"]
 // }
@@ -16,9 +16,7 @@ const connectDB = async () => {
     // console.log(process.env)
     try{
         // eslint-disable-next-line no-undef
-        await mongoose.connect(process.env.MONGO_DB_URI,{
-            useNewUrlParser: true,
-            useUnifiedTopology: true,}).then(() => {
+        await mongoose.connect(process.env.MONGO_DB_URI).then(() => {
                 console.log('connected to mongoDB')
             })
     }   catch(err){
@@ -37,6 +35,7 @@ app.get('/', (req, res)=>{
 //     console.log('Body:', req.body);
 //     next();
 // });
+app.use('/api/menus', menuRoutes);
 app.listen('8080', () => {
     console.log('server is running on port 8080')
 });
