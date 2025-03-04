@@ -8,7 +8,9 @@ import menuRoutes from './api/menus.js';
 //     origin: ["http://localhost:5173"]
 // }
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: '*',
+}));
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 dotenv.config();
@@ -41,3 +43,4 @@ app.listen('8080', () => {
 });
 
 app.use('/api/auth', authRoutes);
+export default app;
