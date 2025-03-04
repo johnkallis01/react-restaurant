@@ -1,5 +1,5 @@
 import { FETCH_MENUS_REQUEST, FETCH_MENUS_SUCCESS, FETCH_MENUS_FAILURE } from './actionTypes';
-const API_URL = 'http://localhost:8080/api/menus';
+const API_URL = process.env.REACT_APP_API_URL + '/menus';
 export const fetchMenu=()=> async (dispatch) => {
     dispatch({type: FETCH_MENUS_REQUEST});
     try {

@@ -1,13 +1,10 @@
-import { useEffect, useState, useMemo } from 'react';
-// import {useDispatch, useSelector } from 'react-redux';
-// import {fetchMenus} from './menuSlice';
-import {useDispatch, useSelector } from 'react-redux';
-import {fetchMenus} from '../store/menuSlice';
+import { useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import DisplayMenu from '../components/DisplayMenu';
 import '../assets/pages/menus.css';
 const Order = () => {
 
-    const dispatch = useDispatch();
+    
     // const {menus, loading, error} = useSelector((state)=>state.menus);
     const {menus, error} = useSelector((state)=>state.menus);
     const [index, setIndex] = useState(0);
@@ -37,9 +34,7 @@ const Order = () => {
         })
     },[today.hour, today.min, todayMenus])
 
-    useEffect(() => {
-        dispatch(fetchMenus());
-    }, [dispatch]);
+
     // if(loading) return <p>Loading ....</p>;
     if(error) return <p>Error: {error}</p>
 

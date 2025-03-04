@@ -17,7 +17,7 @@ const Header = () => {
     const handleLogout = () => {
         localStorage.clear();
         setIsLoggedIn(false);
-        navigate('/login')
+        navigate('/login');
     }
     useEffect(() => {
         if(token) setIsLoggedIn(true);
@@ -37,7 +37,7 @@ const Header = () => {
                     </div>
                     <div className='link-group right'>
                         {isLoggedIn ? <li onClick={handleShowDropDown}>Edit Menu</li> : null}
-                        { showDropDown ? <DropDownMenu /> : null}
+                        { showDropDown ? <DropDownMenu close={setShowDropDown}/> : null}
                         {isLoggedIn ? 
                         <li onClick={handleLogout}> logout </li> : 
                         <li> <Link to="/login">Login</Link></li>}

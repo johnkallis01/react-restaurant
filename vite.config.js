@@ -8,13 +8,8 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api':'http://localhost:8080'
+      '/api':'http://localhost:5000'
     }
   },
   plugins: [react()],
-  // server: {
-  //   proxy: {
-  //     '/api': 'https://localhost:8080',
-  //   }
-  // }
 })

@@ -1,8 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-const API_URL = 'http://localhost:8080/api';
+
+
+// const API_URL = '*/api';
+
+// const API_URL = 'https://react-restaurant-johnkallis01-johnkallis01s-projects.vercel.app/api'
+const API_URL = 'http://localhost:5000/api';
 export const fetchMenus = createAsyncThunk('menus/fetchMenus', async (_,{rejectWithValue}) => {
     console.log('fetch menus')
     try{
+        console.log(API_URL)
         const response = await fetch(`${API_URL}/menus`);
         // console.log(response.json())
         // if(!response.ok) throw new Error('failed to fetch menus');

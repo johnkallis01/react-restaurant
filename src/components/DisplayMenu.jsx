@@ -2,7 +2,7 @@ import {useState} from 'react';
 import PropTypes from 'prop-types';
 import DisplaySchedule from './DisplaySchedule';
 import ModalSelectItem from './ui/modals/ModalSelectItem';
-import '../assets/components/displaymenu.css';
+import '../assets/pages/menus.css';
 // import {useEffect} from 'react'
 const DisplayMenu = ({menu, order}) => {
     

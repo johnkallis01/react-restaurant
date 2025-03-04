@@ -8,9 +8,7 @@ import menuRoutes from './api/menus.js';
 //     origin: ["http://localhost:5173"]
 // }
 const app = express();
-app.use(cors({
-    origin: '*',
-}));
+app.use(cors());
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 dotenv.config();
@@ -37,10 +35,12 @@ app.get('/', (req, res)=>{
 //     console.log('Body:', req.body);
 //     next();
 // });
-app.use('/api/menus', menuRoutes);
-app.listen('8080', () => {
-    console.log('server is running on port 8080')
-});
 
+
+
+app.listen('5000', () => {
+    console.log('server is running on port 5000')
+});
+app.use('/api/menus', menuRoutes);
 app.use('/api/auth', authRoutes);
 export default app;
