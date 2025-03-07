@@ -45,6 +45,16 @@
     /* z-index: 100; */
     margin: 0.6rem 0 0.6rem 1rem;
     font-size: 1.6rem;
+    height: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+.section-description{
+    margin: 0 0 1rem 2rem;
+}
+.section-description input{
+    font-size: 1.2rem;
+    width: 80vw;
 }
 .item-name{
     padding: 0.5rem;
@@ -54,10 +64,11 @@
     background-color: rgb(189, 189, 189);
     border-radius: calc(0.3rem - 0.0625rem) calc(0.3rem - 0.0625rem) 0 0;
 }
+/* .item-container.edit{gap: 0;} */
 .item-container{
     box-sizing: border-box;
     border: 0.0625rem solid black;
-    height: 8rem;
+    min-height: 8.7rem;
     width: 20rem;
     border-radius: 0.3rem;
     position: relative;
@@ -66,7 +77,7 @@
     background-color: azure;
     cursor: pointer;
     text-wrap: wrap;
-
+    /* margin: 0; gap: 0; padding: 0; */
 }
 /* .item-container button{
     cursor: pointer;
@@ -80,11 +91,136 @@
     cursor: default;
     pointer-events: none;
 }
-
+.item-name{
+    text-overflow: ellipsis;
+}
 .item-description{
+    /* box-sizing: border-box; */
+    /* border: 1px solid blue; */
     overflow: scroll;
     scrollbar-width: none;
-    padding: 0.15rem 0.25rem;
+    padding: 0.15rem 0.25rem 0 0.25rem;
+    height: 4.32rem;
+}
+.item-description.edit{
+    /* border: 1px solid green; */
+    
+    /* flex: 1; */
+    overflow: scroll;
+    scrollbar-width: none;
+    /* padding: 0.15rem 0.25rem; */
+}
+/*****
+    edit menus
+*****/
+.display-menu{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    border: 0.0625rem solid black;
+    border-radius: 0.2rem;
+    height: 100%;
+    padding-bottom: 4rem;
+}
+.menu-name{
+    display: flex;
+    justify-content: flex-start;
+    padding: 0.6rem;
+    font-size: 1.2rem;
+    color: white;
+    background-color: rgb(72, 71, 70);
+}
+.menu-name input{
+    font-size: 1.2rem;
+}
+
+.section.edit{
+    top: 0;
+}
+.section-name.edit{
+    font-size: 1.2rem;
+}
+.item-description textarea{
+    width: 100%;
+    padding: 0 0.2rem;
+    height: 5rem;
+    resize: none;
+}
+.new-item{
+    /* border: 1px solid red; */
+    display: flex;
+    font-size: 0.8rem;
+    align-items: center;
+}
+.new-item label{
+    /* border: 1px solid blue; */
+    margin-right: 0.4rem;
+
+}
+.new-item button{
+    /* border: none; */
+    background-color: transparent;
+    border: 0.0625rem solid black;
+    border-radius: 1rem;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+
+    margin-right: 3rem;
+}
+.item-button{
+    display: flex;
+}
+.section-name input{
+    font-size: 1.2rem;
+}
+.item-name button{
+    display: flex;
+    align-items: center;
+    padding: 0 0.2rem;
+    background-color: transparent;
+    border: 0.125rem solid;
+    border-radius: 1rem;
+    margin-right: 0.2rem;
+}
+.item-name input{
+    font-size: 1rem;
+}
+.tabs{
+    /* box-sizing: border-box; */
+    /* border: 1px solid red; */
+}
+.tab-titles{
+    display: flex;
+    margin: 0.4rem 0;
+    padding: 0.1rem 0.3rem;
+    justify-content: space-between;
+}
+.tab-titles button{
+    border: none;
+    /* margin: 0 0.3rem; */
+    cursor: pointer;
+    background-color: transparent;
+}
+.tab-container{
+    padding: 0.3rem;
+    /* height: 100%; */
+    border: 1px solid;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-width: none;
+}
+.tab-content button{
+    background-color: transparent;
+    margin: 0.3rem;
+    padding: 0 0.18rem;
+    border-radius: 1rem;
+    box-shadow: none;
+}
+.tab-content input{
+    /* padding-left: 0.3rem; */
+}
+.tab-value{
+    padding: 0.3rem;
 }
 /****
 display schedule
@@ -111,36 +247,6 @@ display schedule
 li:hover{
     background-color: inherit;
 }
-/*****
-    edit menus
-*****/
-.display-menu{
-    display: flex;
-    flex-direction: column;
-    margin: 1rem;
-    border: 0.0625rem solid black;
-    border-radius: 0.2rem;
-    height: 100%;
-    padding-bottom: 4rem;
-}
-.menu-name{
-    display: flex;
-    justify-content: flex-start;
-    padding: 0.6rem;
-    font-size: 1.2rem;
-    color: white;
-    background-color: rgb(72, 71, 70);
-}
-.menu-name input{
-    font-size: 1.2rem;
-}
-.section.edit{
-    top: 0;
-}
-.section-name.edit{
-    font-size: 1.2rem;
-}
-
 /***  
     window breaks
 ****/

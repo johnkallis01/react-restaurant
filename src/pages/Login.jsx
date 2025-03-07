@@ -29,6 +29,7 @@ const Login = () => {
     });
     return (
     <>
+    <div className="page-container">
         <div className="form-page login">
             <h3>
                 <div>Login</div>
@@ -44,6 +45,7 @@ const Login = () => {
             </form>
 
         </div>
+    </div>
     </>
     )
 }

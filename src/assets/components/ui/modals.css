@@ -69,3 +69,22 @@
 }
 .option-container{}
 .option-title{}
+
+/***
+    delete modal
+***/
+.modal-content.delete{
+    text-wrap: nowrap;
+}
+.text-field{
+    display: flex;
+    justify-content: center;
+}
+.text-field input{
+    font-size: 1.3rem;
+    padding-left: 0.3rem;
+}
+.message{
+    margin: 1rem;
+    text-align: center;
+}

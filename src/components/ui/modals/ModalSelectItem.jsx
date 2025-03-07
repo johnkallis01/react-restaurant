@@ -76,6 +76,14 @@ const ModalSelectItem = ({item, menu, close }) => {
             qty: prev.qty > 1 ? prev.qty-1 : prev.qty,
         }))
     }
+    // const OARC = useMemo(() => {   
+    //     return(
+    // [
+    //     {name: 'options', setFlag: handleView('options'), flag: viewFlags.options},
+    //     {name: 'addOns', setFlag: handleView('addOns'), flag: viewFlags.addOns},
+    //     {name: 'removes', setFlag: handleView('removes'), flag: viewFlags.removes},
+    //     {name: 'comments', setFlag: handleView('comments'), flag: viewFlags.comments, hasValue: true},
+    // ])},[viewFlags])
     const OARC = useMemo(() => {   
         return(
     [

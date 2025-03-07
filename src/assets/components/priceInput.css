@@ -1,0 +1,14 @@
+.price-input{
+    /* background-color: red; */
+    height: 0.5rem;
+}
+.price-input input{
+    margin: 0;
+    font-size: 1rem;
+    padding-left: 0.65rem;
+    width: 4rem;
+}
+.prefix{
+    position: relative;
+    left: 0.7rem;
+}

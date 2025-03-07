@@ -10,10 +10,16 @@
     z-index: 12;
     cursor: pointer;
 }
-li{
+.dropdown-menu li{
     text-align: center;
     text-wrap: nowrap;
+    height: 1.4rem;
 }
-.edit-menu:hover{
+.dropdown-menu li:hover{
     background-color: rgb(172, 227, 227);
+}
+@media(max-width: 600px){
+    .dropdown-menu{
+        right: 5rem;
+    }
 }

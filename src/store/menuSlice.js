@@ -22,6 +22,23 @@ export const fetchMenus = createAsyncThunk('menus/fetchMenus', async (_,{rejectW
     }
 
 });
+// export const fetchMenu = createAsyncThunk('menus/:id', async (id,{rejectWithValue}) => {
+//     console.log('fetch menu by id')
+//     try{
+//         console.log(API_URL)
+//         const response = await fetch(`${API_URL}/menus/${id}`);
+//         // console.log(response.json())
+//         // if(!response.ok) throw new Error('failed to fetch menu by id');
+//         console.log('response');
+//         const data = await response.json();
+//         console.log('data:', data)
+//         return data;
+//     }catch(err){
+//         console.log('error');
+//         return rejectWithValue(err.response.data?.message||'failed to fetch menu by id');
+//     }
+
+// });
 const menuSlice = createSlice({
     name: 'menus',
     initialState: {

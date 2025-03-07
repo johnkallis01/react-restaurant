@@ -9,6 +9,10 @@ html{
     background-color: crimson;
     overflow-x: hidden;
 }
+textarea{
+    font-size: 1rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 .app-container{
     display: flex;
     flex-direction: column;
@@ -46,12 +50,29 @@ main {
     overflow: hidden;
     
 }
+.page-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
 a{
     text-decoration: none;
     color: black;
 }
 ul{
     list-style: none;
+}
+input{
+    font-size: 1rem;
+    padding-left: 0.2rem;
+    border: 0.0625rem solid;
+    border-radius: 0.22rem;
+}
+input:focus{
+    outline: none;
+    border-color: #1976d2;
+    
 }
 header {
     color: white;
@@ -176,7 +197,11 @@ footer {
 }
 @media(max-width: 600px){
     header nav ul li{
-        padding: 0.4rem;
+        padding: 0.3rem 0.4rem;
         font-size: 1rem;
+    }
+    header nav ul li:hover{
+        /* padding: inherit; */
+        background-color: rgb(102, 169, 180);
     }
 }

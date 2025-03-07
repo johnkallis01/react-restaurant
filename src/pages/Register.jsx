@@ -55,6 +55,7 @@ const Register = () => {
     // }
     return (
     <>
+    <div className="page-container">
         <div className="form-page register">
             <h3>
                 <div>Register</div>
@@ -69,6 +70,7 @@ const Register = () => {
                 </div>
             </form>
         </div>
+    </div>
     </>
     )
 }
