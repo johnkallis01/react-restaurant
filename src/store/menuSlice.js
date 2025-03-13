@@ -9,7 +9,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 export const fetchMenus = createAsyncThunk('menus/fetchMenus', async (_,{rejectWithValue}) => {
     console.log('fetch menus')
     try{
-        console.log(apiUrl)
+        // console.log(apiUrl)
         const response = await fetch(`${apiUrl}/menus`);
         // console.log(response.json())
         if(!response.ok) throw new Error('failed to fetch menus');

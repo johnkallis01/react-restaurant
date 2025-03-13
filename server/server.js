@@ -26,14 +26,8 @@ const connectDB = async () => {
     }
 }
 connectDB();
-app.get('/', (req, res)=>{
-    res.send("connected to server")
-});
-// app.use((req, res, next) => {
-//     console.log('Received Request:', req.method, req.url);
-//     console.log('Headers:', req.headers);
-//     console.log('Body:', req.body);
-//     next();
+// app.get('/', (req, res)=>{
+//     res.send("connected to server")
 // });
 
 

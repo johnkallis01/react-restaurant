@@ -266,7 +266,9 @@ display schedule
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 .schedule ul li{
     text-wrap: nowrap;   
