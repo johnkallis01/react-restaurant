@@ -1,6 +1,7 @@
 .price-input{
     /* background-color: red; */
-    height: 0.5rem;
+    position: relative;
+    height: fit-content;
 }
 .price-input input{
     margin: 0;

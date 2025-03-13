@@ -1,4 +1,8 @@
 .menu-tabs{
+    height: 3rem;
+    /* border: 1px solid pink; */
+}
+.menu-tabs ul{
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -6,25 +10,18 @@
     scrollbar-width: none;
     padding: 0.5rem 1rem;
     gap: 1rem;
-}
-.menu-tabs ul{
-    /* padding: 0.5rem; */
-    display: flex;
-    flex-direction: row;
-
-    /* gap: 1rem; */
+    border: 1px solid;
 }
 .menu-tabs li{
     cursor: pointer;
     text-wrap: nowrap;
+    width: fit-content;
 }
 
 /********
     display menu component
 ********/
 .menu-page{
-    background-color: bisque;
-    height: 100%;
     min-height: 100vh;
     padding-bottom: 8rem;
 }
@@ -45,12 +42,15 @@
     /* z-index: 100; */
     margin: 0.6rem 0 0.6rem 1rem;
     font-size: 1.6rem;
-    height: 2rem;
+    min-height: 2rem;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    /* border: 1px solid red; */
 }
 .section-description{
     margin: 0 0 1rem 2rem;
+    text-wrap: wrap;
 }
 .section-description input{
     font-size: 1.2rem;
@@ -121,6 +121,7 @@
     border-radius: 0.2rem;
     height: 100%;
     padding-bottom: 4rem;
+    background-color: bisque;
 }
 .menu-name{
     display: flex;
@@ -143,14 +144,16 @@
 .item-description textarea{
     width: 100%;
     padding: 0 0.2rem;
-    height: 5rem;
+    height: 4rem;
     resize: none;
+    scrollbar-width: none;
 }
 .new-item{
     /* border: 1px solid red; */
     display: flex;
     font-size: 0.8rem;
     align-items: center;
+    margin: 0.3rem;
 }
 .new-item label{
     /* border: 1px solid blue; */
@@ -164,11 +167,13 @@
     border-radius: 1rem;
     padding: 0.4rem 0.6rem;
     cursor: pointer;
-
     margin-right: 3rem;
 }
 .item-button{
     display: flex;
+}
+.item-button button{
+    cursor: pointer;
 }
 .section-name input{
     font-size: 1.2rem;
@@ -209,6 +214,14 @@
     overflow-x: hidden;
     scrollbar-width: none;
 }
+.tab-content{
+    display: flex;
+    /* justify-content: space-between; */
+}
+.tab-content{
+    display: flex;
+    flex-direction: column;
+}
 .tab-content button{
     background-color: transparent;
     margin: 0.3rem;
@@ -216,8 +229,27 @@
     border-radius: 1rem;
     box-shadow: none;
 }
-.tab-content input{
-    /* padding-left: 0.3rem; */
+.item-name.tab{
+    /* border: 1px solid green; */
+    padding: 0.2rem 0;
+    background-color: transparent;
+    align-items: center;
+    align-content: center;
+}
+.item-name button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.2rem 0.2rem;
+    /* margin-top: 0; */
+}
+.item-button.tab{
+    align-items: center;
+    padding-bottom: 0.2rem;
+}
+.price{
+    /* border: 1px solid green; */
+    padding-right: 0.3rem;
 }
 .tab-value{
     padding: 0.3rem;
@@ -269,7 +301,7 @@ li:hover{
         flex-direction: column;
     }
 }
-@media(max-width: 685px){
+@media(max-width: 690px){
     .section-container{
         display: flex;
         flex-direction: column;
@@ -289,6 +321,13 @@ li:hover{
     .menu-tabs{
         gap: 0.5rem;
         font-size: 0.8rem;
+    }
+    .display-menu{
+        width: 100vw;
+        margin: 0;
+    }
+    .section-name{
+        height: 4rem;
     }
 }
 /**edit menus **/

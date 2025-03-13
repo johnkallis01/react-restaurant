@@ -40,11 +40,13 @@ const Order = () => {
 
     return (
         <div className='display-menu'>
-            <ul className="menu-tabs">
-                {nowMenus.map((menu, i)=>(
-                    <li onClick={() => handleSetIndex(i)} key={menu._id} style={{borderBottom: index===i ? '1px solid green' : 'none'}}> {menu.name}</li>
-                ))}
-            </ul>
+            <div className="menu-tabs">
+                <ul>
+                    {nowMenus.map((menu, i)=>(
+                        <li onClick={() => handleSetIndex(i)} key={menu._id} style={{borderBottom: index===i ? '1px solid green' : 'none'}}> {menu.name}</li>
+                    ))}
+                </ul>
+            </div>
             {nowMenus[index] ? <DisplayMenu menu={nowMenus[index]} order={true}/> : <p>menu not found</p>}
         </div>
 

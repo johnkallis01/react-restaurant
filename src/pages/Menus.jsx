@@ -16,11 +16,13 @@ const Menus = () => {
     
     return (
         <div className='display-menu'>
-            <ul className="menu-tabs">
-                {menus.map((menu, i)=>(
-                    <li onClick={() => handleSetIndex(i)} key={menu._id} style={{borderBottom: index===i ? '1px solid green' : 'none'}}> {menu.name}</li>
-                ))}
-            </ul>
+            <div className="menu-tabs">
+                <ul>
+                    {menus.map((menu, i)=>(
+                        <li onClick={() => handleSetIndex(i)} key={menu._id} style={{borderBottom: index===i ? '1px solid green' : 'none'}}> {menu.name}</li>
+                    ))}
+                </ul>
+            </div>
             {menus[index] ? <DisplayMenu menu={menus[index]} order={true}/> : <p>menu not found</p>}
         </div>
 

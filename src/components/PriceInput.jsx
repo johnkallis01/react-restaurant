@@ -22,7 +22,7 @@ const PriceInput = ({price, setPriceOnChange, handleOnBlur, handlePriceTab}) => 
         return leftHandSide + '.' + rightHandSide;
     }
     const formatPriceInput = (e) => {
-        console.log(e)
+        // console.log(e)
         if(e.key==='Enter') handleSendData();
         else if(e.key === 'Tab'){
             e.preventDefault();
@@ -31,14 +31,14 @@ const PriceInput = ({price, setPriceOnChange, handleOnBlur, handlePriceTab}) => 
         }
         else{
             if(e.key==='Backspace'){
-                console.log('backspace', e.target.value.slice(0,-1))
+                // console.log('backspace', e.target.value.slice(0,-1))
                 setLocalPrice('0'+e.target.value.slice(0,-1));
                 // e.target.value = formattedPrice;
                 return;
             }
             const inputChar = e.key;
             if(/^\d$/.test(inputChar)){
-                console.log('num')
+                // console.log('num')
                 setLocalPrice(e.target.value.slice(1)+inputChar)
                 return;
             }
@@ -49,6 +49,7 @@ const PriceInput = ({price, setPriceOnChange, handleOnBlur, handlePriceTab}) => 
         // console.log(formattedPrice)
         setPriceOnChange(moveDecimal(localPrice));
         handleOnBlur();
+        // price='000.00'
     }
     useEffect(() => {
         if(priceRef.current){

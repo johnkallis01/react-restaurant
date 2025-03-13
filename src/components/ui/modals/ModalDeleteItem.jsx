@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import {useState, useEffect} from 'react';
+import usePriceFormatter from '../../../hooks/usePriceFormatter';
+
 const ModalDeleteItem = ({ item, closeCancel,closeDelete}) => {
+    const {formatPrice} = usePriceFormatter();
     const areYouSure = "Are you sure you want to delete " + item.name + "?";
     const message = "Type '" + item.name + "' to delete";
     const [isDisabled, setIsDisabled] = useState(true);
@@ -29,7 +32,7 @@ const ModalDeleteItem = ({ item, closeCancel,closeDelete}) => {
             <div className="modal delete-item">
                 <div className='modal-title'>
                     <span>{item.name}</span>
-                    <span>{item.price}</span>
+                    <span>{formatPrice(item.price)}</span>
                 </div>
                 <div className="modal-content delete">
                     <p className='message'>{areYouSure}</p>

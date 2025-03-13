@@ -21,9 +21,10 @@
     max-width: 20rem;
     width: 100%;
     height: 20rem;
-    background-color: azure;
+    background-color: rgb(254, 254, 254);
     border-radius: 0.2rem;
-    border: 0.0625rem solid black;
+    border: 0.1875rem solid black;
+    box-shadow: 10px 5px 5px 5px rgb(183, 188, 189);
 }
 .modal-title{
     display: flex;
@@ -54,7 +55,6 @@
     border: none;
     margin: 0 0.3rem;
     cursor: pointer;
-    background-color: transparent;
 }
 .tab-container{
     padding: 0.3rem;
@@ -67,18 +67,18 @@
 .tab-value{
     padding: 0.3rem;
 }
-.option-container{}
-.option-title{}
+
 
 /***
     delete modal
 ***/
 .modal-content.delete{
-    text-wrap: nowrap;
+    text-wrap: wrap;
 }
 .text-field{
     display: flex;
     justify-content: center;
+    
 }
 .text-field input{
     font-size: 1.3rem;
@@ -87,4 +87,125 @@
 .message{
     margin: 1rem;
     text-align: center;
+}
+
+/***
+    modal options
+***/
+.modal.options{
+    min-width: 40rem;
+}
+.modal-title.options button{
+    display: flex;
+    border: 0.0625rem solid black;
+    border-radius: 1rem;
+}
+.modal-content.options{
+    /* border: 1px solid red; */
+    display: flex;
+    /* justify-content: flex-start; */
+    flex-direction: column;
+    padding: 0.5rem;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+.text-field{
+    /* border: 1px solid blue; */
+    width: 15rem;
+    /* height: 100%; */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.text-field.options button{
+    margin-top: 0.5rem;
+}
+.content-row{
+    display: flex;
+    flex-direction: row;
+    min-height: 3rem;
+    /* border: 1px solid peru;  */
+    width: 100%;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.checkbox-button{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* border: 1px solid red; */
+    padding: 0 0 0 1rem;
+    gap: 3rem;
+}
+.checkbox{
+    display: flex;
+    align-items: center;
+    /* border: 1px solid red; */
+    align-content: center;
+    /* padding-top: 0.7rem; */
+}
+.checkbox input{
+    margin: 0.3rem 0 0 0.3rem;
+}
+.submit-button{
+    /* border: 1px solid green; */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex: 1;
+}
+.submit-button button{
+    padding: 0.2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+}
+.price{
+    /* height: 100%; */
+    display: flex;
+    align-items: center;
+    padding-top: 0.2rem;
+    /* border: 1px solid green; */
+}
+.price input{
+    font-size: 1rem;
+    height: 1.5rem;
+}
+.content-row.last{
+    border-bottom: 0.0625rem solid;
+}
+.content-row.value{
+    justify-content: flex-start;
+}
+.option{
+    /* border: 1px solid blue; */
+}
+
+.option-content{
+    margin: 0 0.5rem;
+    display: flex;
+    text-wrap: nowrap;
+}
+@media(max-width: 650px){
+    .modal.options{
+        min-width: 100vw;
+    }
+}
+@media(max-width: 475px){
+    .modal.options{
+        height: 90vh;
+    }
+    /* .content-row{
+        height: 6rem;
+        flex-wrap: wrap;
+        /* border: 1px solid red; */
+    } */
+    .content-row.value{
+        padding-bottom: 0.3rem;
+    }
+    .checkbox-button{
+        padding: 0;
+        margin-top: 0.5rem;
+    }
 }

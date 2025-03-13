@@ -56,12 +56,31 @@ main {
     align-items: center;
     height: 90vh;
 }
+.page-container.home{
+    background-image: url("https://thumbs.dreamstime.com/b/night-scene-empty-table-restaurant-background-ads-featuring-wooden-foreground-blurred-under-lights-setting-provides-337072366.jpg");
+    background-size: cover;
+}
+.home-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background-color: darkgreen;
+    color: white;
+    width: 25rem;
+    height: 15rem;
+    border-radius: 0.5rem;
+}
 a{
     text-decoration: none;
     color: black;
 }
 ul{
     list-style: none;
+}
+button{
+    background-color: transparent;
 }
 input{
     font-size: 1rem;
@@ -186,6 +205,17 @@ footer {
 }
 .qty-title{
     margin: 0 0.2rem;
+}
+/** close button **/
+.button-close{
+    background-color: transparent;
+    margin: 0.3rem;
+    padding: 0.2rem;
+    border-radius: 1rem;
+    box-shadow: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 /***
     window breaks

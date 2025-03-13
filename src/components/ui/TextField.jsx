@@ -3,7 +3,7 @@ import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js';
 import '../../assets/components/ui/floatingText.css';
 import { useState, useRef } from "react";
 import PropTypes from 'prop-types';
-const TextField = ({ name, setInput, isPassword, placeHolder, rule }) => {
+const TextField = ({ name, setInput, isPassword, placeHolder, rule, bgColor }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isValid, setIsValid] = useState(true);
     const inputRef = useRef(null);
@@ -30,7 +30,7 @@ const TextField = ({ name, setInput, isPassword, placeHolder, rule }) => {
                 onChange={(e)=>handleInput(e,name)}
                 onBlur={handleCheckIsValid}
             />
-            <label onClick={handleClick}>{placeHolder}</label>
+            <label onClick={handleClick} style={{'--label-bg-color': bgColor}}>{placeHolder}</label>
             {isPassword && (
                 <Icon
                     className="eye-button"
@@ -49,5 +49,9 @@ TextField.propTypes = {
     setInput: PropTypes.func.isRequired,
     isPassword: PropTypes.bool,
     rule: PropTypes.object,
+    bgColor: PropTypes.string,
 }
+TextField.defaultProps = {
+    bgColor: 'white',
+};
 export default TextField;
