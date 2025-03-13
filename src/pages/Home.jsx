@@ -12,6 +12,7 @@ const Home = () => {
                 <h3>{"John's Restaurant"}</h3>
                 <p>{'johnkallis01@gmail.com'}</p>
                 <p>{'667-470-8868'}</p>
+                <p>{'testing'}</p>
             </div>
            
         </div>
