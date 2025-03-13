@@ -1,4 +1,5 @@
-import { useState,useEffect } from "react";
+// import { useState, useEffect } from "react";
+import { useState } from "react";
 import TextField from "../components/ui/TextField";
 import { Link} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -23,10 +24,10 @@ const Login = () => {
         {placeHolder: 'Login', name: 'login', setInput: handleSetLogin, isPassword: false},
         {placeHolder: 'Password',name: 'password', setInput: handleSetPassword, isPassword: true}
     ];
-    useEffect(() => {
-        console.log(login);
-        console.log(password);
-    });
+    // useEffect(() => {
+    //     console.log(login);
+    //     console.log(password);
+    // });
     return (
     <>
     <div className="page-container">
