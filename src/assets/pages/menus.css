@@ -1,23 +1,22 @@
 .menu-tabs{
-    height: 3rem;
-    /* border: 1px solid pink; */
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid;
 }
 .menu-tabs ul{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    overflow-x: scroll;
+    overflow-x: auto;
     scrollbar-width: none;
     padding: 0.5rem 1rem;
     gap: 1rem;
-    border: 1px solid;
+    width: fit-content;
 }
 .menu-tabs li{
     cursor: pointer;
     text-wrap: nowrap;
-    width: fit-content;
 }
-
 /********
     display menu component
 ********/
@@ -25,16 +24,20 @@
     min-height: 100vh;
     padding-bottom: 8rem;
 }
-.section{
+.section-container{
     text-wrap: nowrap;
     position: relative;
     top: 3.3rem;
+    /* background-color: red; */
 }
-.section-container{
+.section-body{
     display: grid;
-    gap: 1rem 2rem;
+    gap: 1rem 0;
     grid-template-columns: repeat(3, 1fr);
     margin-left: 3rem;
+    width: 100%;
+    white-space: collapse;
+    
     /* box-sizing: border-box;
     border: 1px solid green; */
 }
@@ -49,12 +52,13 @@
     /* border: 1px solid red; */
 }
 .section-description{
+    min-height: 2rem;
     margin: 0 0 1rem 2rem;
     text-wrap: wrap;
 }
 .section-description input{
     font-size: 1.2rem;
-    width: 80vw;
+    width: 80%;
 }
 .item-name{
     padding: 0.5rem;
@@ -77,14 +81,9 @@
     background-color: azure;
     cursor: pointer;
     text-wrap: wrap;
+    text-align: left;
     /* margin: 0; gap: 0; padding: 0; */
 }
-/* .item-container button{
-    cursor: pointer;
-}
-.item-container button:disabled{
-    cursor: default;
-} */
 .item-container.disabled{
     color: black;
     background-color: azure;
@@ -116,7 +115,7 @@
 .display-menu{
     display: flex;
     flex-direction: column;
-    margin: 1rem;
+    /* margin: 1rem; */
     border: 0.0625rem solid black;
     border-radius: 0.2rem;
     height: 100%;
@@ -177,6 +176,7 @@
 }
 .section-name input{
     font-size: 1.2rem;
+    height: 1.8rem;
 }
 .item-name button{
     display: flex;
@@ -258,9 +258,12 @@
 display schedule
 ****/
 .schedule{
-    background-color: azure;
+    /* background-color: azure; */
     cursor: default;
     padding: 1rem;
+    width: calc(100% - 0.125rem);
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
 .schedule ul{
     display: flex;
@@ -285,51 +288,63 @@ li:hover{
     window breaks
 ****/
 /***display menu ***/
-@media(max-width: 1200px){
-    .section-container{
+@media (max-width: 1240px) {
+    .section-body{
         grid-template-columns: repeat(2, 1fr);
     }
     
 }
-@media(max-width: 815px){
+@media (max-width: 838px) {
     .menu-page{
-        width: 100vw;     
+        width: 100%;     
+        /* background-color: red; */
     }
-    .section-container{
+    .section-body{
         margin-left: 1rem;
+        /* margin: 0; */
         gap: 1rem 0;
     }
     .schedule ul{
         flex-direction: column;
     }
 }
-@media(max-width: 690px){
-    .section-container{
+@media (max-width: 750px){
+    .seciton-body{
+        margin: 0;
+    }
+}
+@media (max-width: 700px) {
+    .section-body{
+        /* background-color: green; */
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin: 0;
     }
     .item-container{
         width: 25rem;
     }
 }
-@media(max-width: 450px){
-    .item-container{
-        width: 20rem;
-    }
-}
-/** menus page **/
-@media(max-width: 560px){
-    .menu-tabs{
+@media (max-width: 560px) {
+    .menu-tabs ul{
         gap: 0.5rem;
-        font-size: 0.8rem;
+        font-size: 1rem;
     }
     .display-menu{
-        width: 100vw;
+        width: 100%;
+        /* margin: 1rem; */
         margin: 0;
     }
     .section-name{
         height: 4rem;
     }
 }
+/* @media(max-width: ) */
+@media (max-width: 450px) {
+    .item-container{
+        width: 20rem;
+    }
+}
+/** menus page **/
+
 /**edit menus **/

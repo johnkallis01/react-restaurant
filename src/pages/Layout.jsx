@@ -7,6 +7,7 @@ import {fetchMenus} from '../store/menuSlice';
 const Layout = () => {
     const dispatch = useDispatch();
     useEffect(() => {
+        
         dispatch(fetchMenus());
     }, [dispatch]);
     return (

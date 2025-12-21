@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import PriceInput from '../components/PriceInput'
+import {useDispatch } from 'react-redux';
+import {updateMenu} from '../store/menuSlice';
+import PriceInput from '../components/ui/PriceInput'
 import ModalDeleteItem from '../components/ui/modals/ModalDeleteItem';
 import ModalOptions from '../components/ui/modals/ModalOptions';
 import Icon from '@mdi/react';
@@ -14,26 +16,28 @@ import usePriceFormatter from '../hooks/usePriceFormatter';
 
 const EditMenu = () => {
     const { id } = useParams();
+    const dispatch = useDispatch();
     const {formatPrice} = usePriceFormatter();
     const {menus, error} = useSelector((state)=>state.menus);
     const [menu, setMenu] = useState(null);
     // const [newSectionFlag, setNewSectionFlag] = useState(false);
+    //array of length=sections.length to show new item
     const [newItemFlag, setNewItemFlag] = useState([]);
     const [newItem, setNewItem] = useState([]);
-    const [openDeleteModal, setopenDeleteModal] = useState(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [deleteItem, setDeleteItem] = useState({});
-    const [optionItem, setOptionItem] = useState({});
+
+    
+
     const [activeSectionIndex, setActiveSectionIndex] = useState(null);
     const [activeSectionRef, setActiveSectionRef] = useState(null);
+
     const [activeItemIndex, setActiveItemIndex] = useState(null);
     const [activeItemRef, setActiveItemRef] = useState(null);
-    const [activeAddOnRef, setActiveAddOnRef] = useState(null);
-    const [activeRemovesRef, setActiveRemovesRef] = useState(null);
-    const [activeNewItemRef, setActiveNewItemRef] = useState(null);
-    const [viewFlags, setViewFlags] = useState([]);
-    const [sectionOptionModal, setSectionOptionModal] = useState(false);
-    const [newAddOn, setNewAddOn] = useState(()=>new AddOn());
-    const [newRemove, setNewRemove] = useState(()=>new Remove());
+    
+    
+    
+    
     const [editFlags, setEditFlags]=useState({
         menuName: false,
         sections: []
@@ -42,64 +46,339 @@ const EditMenu = () => {
         //      name: false, price: false, despcription: false
         //   }]}]
     });
+    const [addNewItemFlag, setAddNewItemFlag] = useState(false);
     const [newPriceFlag, setNewPriceFlag] = useState(false);
+    
     const menuNameInputRef = useRef(null);
     const sectionNameInputRef = useRef([]);
     const sectionDescriptionInputRef = useRef([]);
     const newItemNameInputRef=useRef([]);
     const newItemDescriptionInputRef=useRef([]);
     const itemNameInputRef = useRef([]);
+    
     // const newItemPriceInputRef=useRef([])
     const itemDescriptionInputRef = useRef([]);
+
+    /** 
+     * @param {HTMLElement} ref - references an <input> DOM element 
+     */
+    const focusInput = (ref) => {
+        // console.log('focus',ref)
+        ref?.focus();
+    }
+    /*****
+     *  Options AddOns Removes Logic and data
+     ****/
+    //constants
+    const OAR = ['options','addOns','removes'];
+    //state addOns/removes
+    const [activeAddOnRef, setActiveAddOnRef] = useState(null);
+    const [activeRemovesRef, setActiveRemovesRef] = useState(null);
+    const [activeNewItemRef, setActiveNewItemRef] = useState(null);
+    const [viewFlags, setViewFlags] = useState([]);
+    const [newAddOn, setNewAddOn] = useState(()=>new AddOn());
+    const [newRemove, setNewRemove] = useState(()=>new Remove());
+    //state options
+    const [optionModal, setOptionModal] = useState(false);
+    const [optionObject, setOptionObject] = useState({});
+
+    //refs
     const addOnInputRef = useRef({})
-    const removesInputRef = useRef({})
+    const removesInputRef = useRef({});
+    /**
+     * @param {string} refKey contains the indices of the section, item, remove 'i-j-k'
+     * @param {string} tab 'addOns' or 'removes'
+     * @returns the ref key as the array key
+     */
     const handleRefKey = (refKey, tab) => {
-        console.log(refKey)
+        // console.log(refKey)
         if(tab==='addOns') setActiveAddOnRef(refKey);
         else if (tab==='removes') setActiveRemovesRef(refKey);
-        console.log(refKey, activeRemovesRef, activeAddOnRef)
+        // console.log(refKey, activeRemovesRef, activeAddOnRef)
         return refKey;
     }
-    const handleView = (field, index) => {
-        console.log(index)
-        console.log(viewFlags)
-        setViewFlags((prev)=>(
-            prev.map((view,i)=>
-                (i===index) ? {
-                    options: false,
-                    addOns: false,
-                    removes: false,
-                    [field]: !view[field]
-                } : {
-                    options: false,
-                    addOns: false,
-                    removes: false,
-                }
-            )
-        ))
-         setActiveAddOnRef(null);
-         setActiveRemovesRef(null);
-         setNewAddOn(new AddOn());
-         setNewRemove(new Remove())
-        // addOnInputRef.current=null
+    /**
+     * @param {string} field - the tab type 'removes', addOns', 'options'
+     * @param {number} index - the section index
+     * @param {number} jndex - the item index
+     */
+    const handleViewTabs = (field, index, jndex) => {
+        // console.log(field, index)
+        // console.log(viewFlags)
+        //map through flags object.
+        //if on active index of item set field to true
+        //else if item has true value set all to false
+        if(field === 'removes' || field === 'addOns'){
+            setViewFlags((prev)=>(
+                prev.map((view,i)=>{
+                    return (i===index) ? {
+                        addOns: false, removes: false,
+                        [field]: !view[field]
+                    } : (view.options || view.addOns || view.removes) ? {
+                        addOns: false, removes: false,
+                    } : view
+                })
+            ))
+        }
+        /**
+         * for addOns, removes
+         * sets the active addOn ref back to null and creates a new Object for creation
+         * 
+         * for options sets the option item for the modal and opens the modal
+         */
+        switch(field){
+            case 'addOns':
+                setActiveAddOnRef(null);
+                setNewAddOn(new AddOn());
+                break;
+            case 'removes':
+                setActiveRemovesRef(null);
+                setNewRemove(new Remove());
+                break;
+            case 'options':
+                //set option object and open modal
+                setOptionObject({...menu.sections[index].items[jndex], section_id: menu.sections[index]._id});
+                setOptionModal(!optionModal);
+                break;
+        }
     }
-    const OAR = ['options','addOns','removes'];
+    /**
+     * 
+     * @param {event} e can also be the price if recieving data from PriceInput component
+     * @param {number} i section index
+     * @param {number} j item index
+     * @param {number} k tab index
+     * @param {string} field 'name', or 'price'
+     * @param {string} tab tab type 'addOns' or 'removes'
+     * @param {Boolean} isNew 
+     */
+    const handleOnChangeTab = (e, i, j,k, field,tab, isNew) => {
+        // console.log(e, i, j,k, field,tab, isNew)
+        const value= (field==='price') ? e : e.target.value;
+        // console.log(value)
+        if(isNew){
+            //assigns the input to the tab object
+            if(tab==='addOns'){
+                setNewAddOn((prev)=>{
+                    const updated = {
+                        ...prev,
+                        [field]:value
+                    }
+                    console.log(updated)
+                    return updated;
+                })
+                console.log(newAddOn)
+            }
+            else if(tab==='removes'){
+                console.log('is new, removes')
+                console.log(value)
+                setNewRemove({
+                    name: value
+                })
+            }
+            console.log(newAddOn)
+        }
+        else{
+            //assigns the input to the existing tab object
+           setMenu((prev)=>({
+                ...prev,
+                sections: prev.sections.map((section, index)=>{
+                    if(index===i){
+                        return {
+                            ...section,
+                            items: section.items.map((item,jndex)=>{
+                                if(jndex===j){
+                                    return {...item,
+                                    [tab]: item?.[tab].map((val,kndex)=>
+                                        kndex===k ? {...val, [field]:value } : val
+                                    )
+                                }
+                            }
+                            return item;
+                            })
+                        }
+                    }
+                    return section;
+                })
+            }))  
+        }
+    }
+    /**
+     * 
+     * @param {Number} i section index
+     * @param {Number} j item index
+     * @param {String} tab tab type 'addOns' or 'price'
+     */
+    const postNewTab = (i,j,tab)=>{
+        console.log(newAddOn);
+        //adds the new data to the existing menu state
+        setMenu((prev)=>({
+            ...prev,
+            sections: prev.sections.map((section, index)=>{
+                if(index===i){
+                    return {
+                        ...section,
+                        items: section.items.map((item,jndex)=>{
+                            if(jndex===j && tab==='removes' && newRemove.name){
+                                return {...item,
+                                    removes: [...item.removes,{
+                                        name: newRemove.name,
+                                        _id: newRemove._id
+                                    }]
+                                }
+                            }
+                            else if(jndex===j && tab==='addOns' && newAddOn.name){
+                                return {...item,
+                                    addOns: [...item.addOns,{
+                                        name: newAddOn.name,
+                                        _id: newAddOn._id,
+                                        price: newAddOn.price
+                                    }]
+                                }
+                            }
+                            return item;
+                        })
+                    }
+                }
+                return section;
+            })
+        }))
+        //closes the price input and creates a new AddOn Object
+        if(tab==='addOns'){
+            setNewPriceFlag(false);
+            setNewAddOn(()=>new AddOn());
+        } //creates new removes instince
+        else if(tab==='removes') setNewRemove(()=>new Remove());
+        // adds a new flag to the editFlags object for the newly created data
+        setEditFlags((prev)=>({
+            ...prev, sections: prev.sections.map((section,index)=>
+                index===i ? {...section, 
+                    items: section.items.map((item,jndex)=>{
+                        if(jndex===j && tab==='removes') {
+                            return {
+                                ...item,
+                                removes: [...item.removes, {
+                                    name: false,
+                                }]
+                            }
+                        }
+                        else if (jndex===j && tab==='addOns'){
+                            return {
+                                ...item,
+                                addOns: [...item.addOns,{
+                                    name: false,
+                                    price: false
+                                }]
+                            }
+                        }
+                        else{
+                            return item;
+                        }
+                    })
+                } : section )}))
+    }
+    /**
+     * 
+     * @param {number} i section index
+     * @param {number} j item index
+     * @param {boolean} isNew 
+     */
+    const handlePriceTab = (i,j, isNew) =>{
+        // console.log('h price tab')
+        // console.log(i, j , isNew)
+        if(isNew) handleItemFlag(i,null,'description', true);
+        else handleItemFlag(i,j, 'description', false);
+    }
+    const handleOptionModal = (obj) =>{
+        // console.log(obj)
+        if(!optionModal) setOptionObject(obj);
+        else setOptionObject(null);
+        setOptionModal(!optionModal);
+    }
+    /**
+     * @param {object} obj item or section object
+     *  updates the local menu and 
+     *  dispatches update to redux/database
+     */
+    const handleAddOption = (obj)=>{
+        console.log(obj);
+        let isItem = obj.section_id ? true : false;
+        console.log(isItem)
+        if(isItem){
+            console.log('item')
+            setMenu(prev=>({
+                ...prev,
+                sections: menu.sections.map(section=>(
+                    section._id === obj.section_id ?
+                        {...section, 
+                            items: section.items.map(item=>(
+                                item._id === obj._id ?
+                                {...item, options: [...obj.options]} : item
+                            ))
+                        } : section
+                ))
+            }))
+
+        }else{
+            console.log('section')
+            //
+            setMenu(prev=>({
+                ...prev,
+                sections: menu.sections.map(section=>(
+                    section._id === obj._id ?
+                      {...section, options: [...obj.options]} : section
+                ))
+            }))
+
+        }
+        handleOptionModal(null);
+        dispatch(updateMenu(menu));
+    }
+    /****
+     * watches the active ref key
+     * focuses the input when the tab is opened
+     ****/
+    useEffect(() => {
+        // console.log(activeAddOnRef)
+        // console.log(addOnInputRef.current)
+        if(activeAddOnRef){
+            focusInput(addOnInputRef.current[activeAddOnRef])
+        }
+    },[activeAddOnRef]);
+    useEffect(() => {
+        // console.log(activeRemovesRef)
+        // console.log(removesInputRef.current)
+        if(activeRemovesRef){
+            focusInput(removesInputRef.current[activeRemovesRef])
+        }
+    },[activeRemovesRef]);
+
     const findItemIndex = (secIn,itIn) => {
         return menu.sections.slice(0,secIn).reduce((index, section)=>index + section.items.length,0)+itIn;
     }
     const handleMenuName = () => {
         setEditFlags({...editFlags, menuName: !editFlags['menuName']});
+        // console.log(editFlags['menuName'])
+        if(editFlags.menuName){
+            dispatch(updateMenu(menu));
+        }
     }
     const handleOnChangeMenuName = (e) => {
-        setMenu({...menu, name: e.target.value})
+        setMenu({...menu, name: e.target.value});
+        
         //later will call db to update
     }
     const handleSectionFlag = (i, field) => {
+        // console.log('handle seciton flag')
         setEditFlags((prev)=>({
             ...prev,
             sections: prev?.sections?.map((section, index)=>
             index===i ? {...section, [field]: !section[field]} : section
         )}))
+        // console.log(editFlags.sections[i][field])
+        if(editFlags.sections[i][field]){
+            dispatch(updateMenu(menu));
+        }
         // console.log(activeSectionIndex)
         setActiveSectionRef((prev)=> (prev===null) ? field : null)
         setActiveSectionIndex((prev) => (prev===null) ? i : null)
@@ -134,23 +413,24 @@ const EditMenu = () => {
                     return section;
                 })
             }));
+            if(editFlags.sections[i].items[j][field]){
+                dispatch(updateMenu(menu));
+            }
             const itemIndex = findItemIndex(i,j);
             setActiveItemRef((prev) => (prev===null) ? field : null);
             setActiveItemIndex((prev) => (prev===null) ? itemIndex : null);
         }
     }
     const handleOnKeyDownItem = (e, i, j, field, isNew) =>{
-        // console.log('key up', e.target.value)
+        // console.log('key down', e.target.value)
         // console.log('on input', e.key)
         // console.log(i, j , field)
         if(isNew){
-           if(e.key ==='Enter'){
-                // handleNewItemFlag(i, field)
-                handleAddNewItem(i);
+            if(e.key ==='Enter'){
+                 handleAddNewItem(i);
             }
             else if(e.key ==='Tab'){
                 e.preventDefault();
-                // console.log('tab')
                 switch(field){
                     case 'name':
                         // handleNewItemFlag(i, 'name');
@@ -162,21 +442,25 @@ const EditMenu = () => {
                 }
             }  
         }else{
-            e.preventDefault();
             if(e.key ==='Enter'){
+                e.preventDefault();
                 // console.log(e.key)
                 handleItemFlag(i,j, 'name', false)
                 // handleAddNewItem(i);
             }
             else if(e.key ==='Tab'){
-                // e.preventDefault();
+                e.preventDefault();
                 // console.log('tab')
                 handleItemFlag(i,j,'price', false);
-            } 
+            }
+            else{
+                handleOnChangeItem(e,i,j,field,false)
+            }
+
         }       
     }
     const handleAddNewItem=(i) => {
-        console.log(newItem)
+        // console.log(newItem)
         //add new Item to local render
         if(newItem[i].name){
             setMenu((prev)=>({
@@ -187,6 +471,10 @@ const EditMenu = () => {
                     description: newItem[i].description
                 }]} : section)
             }));
+            // console.log(menu.sections[i].items)
+            setAddNewItemFlag(true);
+            
+
             //add edit flag for newly created item
             setEditFlags((prev)=>({
                 ...prev, sections: prev.sections.map((section,index)=>
@@ -206,7 +494,9 @@ const EditMenu = () => {
         }
     }
     const handleOnChangeItem = (e, i, j, field, isNew) => {
+        // console.log(e,i,j,field, isNew)
         let value= (field==='price') ? e : e.target.value;
+        // console.log(value)
         if(isNew){
             let value = (field==='price') ? e : e.target.value;
             setNewItem((prev)=>
@@ -231,123 +521,8 @@ const EditMenu = () => {
             }))  
         }
     }
-    const handleOnChangeTab = (e, i, j,k, field,tab, isNew) => {
-        console.log(e, i, j,k, field,tab, isNew)
-        const value= (field==='price') ? e : e.target.value;
-        console.log(value)
-        if(isNew){
-            if(tab==='addOns'){
-                setNewAddOn((prev)=>{
-                    const updated = {
-                        ...prev,
-                        [field]:value
-                    }
-                    console.log(updated)
-                    return updated;
-                })
-                console.log(newAddOn)
-            }
-            else if(tab==='removes'){
-                console.log('is new, removes')
-                console.log(value)
-                setNewRemove({
-                    name: value
-                })
-            }
-            console.log(newAddOn)
-        }
-        else{
-           setMenu((prev)=>({
-                ...prev,
-                sections: prev.sections.map((section, index)=>{
-                    if(index===i){
-                        return {
-                            ...section,
-                            items: section.items.map((item,jndex)=>{
-                                if(jndex===j){
-                                    return {...item,
-                                    [tab]: item?.[tab].map((val,kndex)=>
-                                        kndex===k ? {...val, [field]:value } : val
-                                    )
-                                }
-                            }
-                            return item;
-                            })
-                        }
-                    }
-                    return section;
-                })
-            }))  
-        }
-    }
-    const postNewTab = (i,j,tab)=>{
-        console.log(newAddOn)
-        setMenu((prev)=>({
-            ...prev,
-            sections: prev.sections.map((section, index)=>{
-                if(index===i){
-                    return {
-                        ...section,
-                        items: section.items.map((item,jndex)=>{
-                            if(jndex===j && tab==='removes' && newRemove.name){
-                                return {...item,
-                                    removes: [...item.removes,{
-                                        name: newRemove.name,
-                                        _id: newRemove._id
-                                    }]
-                                }
-                            }
-                            else if(jndex===j && tab==='addOns' && newAddOn.name){
-                                return {...item,
-                                    addOns: [...item.addOns,{
-                                        name: newAddOn.name,
-                                        _id: newAddOn._id,
-                                        price: newAddOn.price
-                                    }]
-                                }
-                            }
-                            return item;
-                        })
-                    }
-                }
-                return section;
-            })
-        }))
-        tab==='addOns' && setNewPriceFlag(false);
-        tab==='removes' ? setNewRemove(()=>new Remove()) : setNewAddOn(()=>new AddOn());
-        setEditFlags((prev)=>({
-            ...prev, sections: prev.sections.map((section,index)=>
-                index===i ? {...section, 
-                    items: section.items.map((item,jndex)=>{
-                        if(jndex===j && tab==='removes') {
-                            return {
-                                ...item,
-                                removes: [...item.removes, {
-                                    name: false,
-                                }]
-                            }
-                        }
-                        else if (jndex===j && tab==='addOns'){
-                            return {
-                                ...item,
-                                addOns: [...item.addOns,{
-                                    name: false,
-                                    price: false
-                                }]
-                            }
-                        }
-                        else{
-                            return item;
-                        }
-                    })
-                } : section )}))
-    }
-    const handlePriceTab = (i,j, isNew) =>{
-        // console.log('h price tab')
-        // console.log(i, j , isNew)
-        if(isNew) handleItemFlag(i,null,'description', true);
-        else handleItemFlag(i,j, 'description', false);
-    }
+    
+    
     const handleOnChangeSection = (e, i, field)=>{
         // console.log(e.target.value)
         setMenu((prev)=>({
@@ -359,7 +534,7 @@ const EditMenu = () => {
         if(!openDeleteModal) setDeleteItem({...item,sectionId});
         else setDeleteItem(null);
 
-        setopenDeleteModal(!openDeleteModal);
+        setOpenDeleteModal(!openDeleteModal);
     }
     const handleDeleteItem = () => {
         // console.log('x', menu)
@@ -378,10 +553,10 @@ const EditMenu = () => {
         // menu.sections.forEach(section=>{
         //     section.items = section.items.filter(item=> item._id !== deleteItem._id)
         // })
-        setopenDeleteModal(false)
+        setOpenDeleteModal(false)
     }
     const handleTabFlag = (i, j, k,tab, field)=>{
-        console.log(i, j, k, field);
+        // console.log(i, j, k, field);
         setEditFlags((prev) => ({
             ...prev,
             sections: prev.sections.map((section, index) => {
@@ -414,7 +589,7 @@ const EditMenu = () => {
         }));
         setActiveAddOnRef(null)
         setActiveRemovesRef(null)
-        console.log(editFlags)
+        // console.log(editFlags)
         // setActiveAddOnRef(null)
     }
     const handleDeleteTab = (i,j,k,tab)=>{
@@ -439,37 +614,20 @@ const EditMenu = () => {
             })
         })) 
     }
-    const handleSectionOpModal = (item)=>{
-        // console.log(i)
-        if(!sectionOptionModal) setOptionItem(item);
-        else setOptionItem(null);
-
-        setSectionOptionModal(!sectionOptionModal);
-    }
-    const handleAddOption = ()=>{
-        //
-    }
-    const focusInput = (ref) => {
-        // console.log('focus',ref)
-        ref?.focus();
-    }
     useEffect(() => {
-        // console.log(activeAddOnRef)
-        // console.log(addOnInputRef.current)
-        if(activeAddOnRef){
-            focusInput(addOnInputRef.current[activeAddOnRef])
-        }
-    },[activeAddOnRef])
+        console.log(menu)
+    },[menu])
+    // useEffect(() => {
+    //     console.log(itemOptionModal)
+    // }, [itemOptionModal])
     useEffect(() => {
-        // console.log(activeRemovesRef)
-        // console.log(removesInputRef.current)
-        if(activeRemovesRef){
-            focusInput(removesInputRef.current[activeRemovesRef])
-        }
-    },[activeRemovesRef])
+        if(addNewItemFlag) dispatch(updateMenu(menu));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[addNewItemFlag])
+    
     useEffect(() => {
         // console.log('ue', newItemNameInputRef, activeSectionIndex)
-        console.log(activeNewItemRef)
+        // console.log(activeNewItemRef)
         switch(activeNewItemRef){
             case 'name':
                 focusInput(newItemNameInputRef.current[activeSectionIndex])
@@ -501,7 +659,7 @@ const EditMenu = () => {
         
     },[activeSectionIndex, activeSectionRef]);
     useEffect(() => {
-        console.log('ref',itemNameInputRef.current, activeItemIndex)
+        // console.log('ref',itemNameInputRef.current, activeItemIndex)
         switch(activeItemRef){
             case 'name':
                 focusInput(itemNameInputRef.current[activeItemIndex])
@@ -573,6 +731,7 @@ const EditMenu = () => {
     // // eslint-disable-next-line react-hooks/exhaustive-deps
     // }, [newItem, newItemFlag, editFlags]);
     useEffect(()=>{
+        // console.log('view Flags')
        let input = document.querySelector('input');
        if(input) input.focus();
     },[viewFlags])
@@ -595,7 +754,7 @@ const EditMenu = () => {
                 </div>
                 {/* map through menu.sections to display section content */}
                 {menu.sections.map((section,i)=>(
-                    <div key={i} className='section edit'>
+                    <div key={i} className='section-container edit'>
                        <div className='section-name edit'>
                         {/* display section name or input for editing section name */}
                         {!editFlags?.sections[i].name && <span onClick={()=>handleSectionFlag(i, 'name')}>{section.name}</span>}
@@ -608,9 +767,10 @@ const EditMenu = () => {
                             />}
                             <div className='new-item'>
                                 <label>New Option</label>
-                                <button onClick={()=>handleSectionOpModal(section)}>
+                                <button onClick={()=>handleOptionModal(section)}>
                                     <Icon path={mdiPlus} size={0.4}/>
                                 </button>
+
                                 <label>New Item</label>
                                 <button onClick={()=>handleItemFlag(i,null, 'show', true)}>
                                     <Icon path={mdiPlus} size={0.4}/>
@@ -619,7 +779,11 @@ const EditMenu = () => {
                         </div>
                         {/* display section description or input for editing section description */}
                         <div className="section-description">
-                            {!editFlags.sections[i].description && <span onClick={()=>handleSectionFlag(i,'description')}>{section.description}</span>}
+                            {!editFlags.sections[i].description && 
+                            (section.description.length > 0 ? 
+                                <span onClick={()=>handleSectionFlag(i,'description')}>{section.description}</span> :
+                                <span onClick={()=>handleSectionFlag(i,'description')}>{'add new description'}</span>
+                            )}
                             {editFlags.sections[i].description &&
                                 <input type='text'
                                     ref={(el)=>sectionDescriptionInputRef.current[i]=el}
@@ -628,7 +792,7 @@ const EditMenu = () => {
                                     onBlur={()=>handleSectionFlag(i,'description')}
                             />}
                         </div>
-                       <div className="section-container edit">
+                       <div className="section-body edit">
                             {newItemFlag[i].show && 
                                 <div className='item-container'>
                                     <div className="item-name edit">
@@ -642,14 +806,14 @@ const EditMenu = () => {
                                             {!newItemFlag[i].name ?( newItem[i].name.length ? <span onClick={()=>handleItemFlag(i,null,'name', true)}>{newItem[i].name}</span>
                                                 : <span onClick={()=>handleItemFlag(i,null,'name', true)}>{'new item name'}</span>
                                             ) :
-                                                (<input type='text'
+                                                <input type='text'
                                                     ref={(el)=>newItemNameInputRef.current[i]=el}
                                                     value={newItem[i]?.name}
                                                     onKeyDown={(e)=>handleOnKeyDownItem(e,i,null,'name', true)}
                                                     onChange={(e)=>handleOnChangeItem(e,i,null,'name', true)}
                                                     // onChange={(e)=>e.preventDefault()}
                                                     onBlur={()=>handleItemFlag(i,null,'name',true)}
-                                                />)}
+                                                />}
                                         </span>
                                         {!newItemFlag[i].price && <span onClick={()=>handleItemFlag(i,null,'price', true)}>{formatPrice(newItem[i].price)}</span>}
                                         {newItemFlag[i].price && 
@@ -714,10 +878,12 @@ const EditMenu = () => {
                                     <div className="tabs">
                                         <div className="tab-titles">
                                             {/* {viewFlags[findItemIndex(i,j)]} */}
-                                            {OAR.map((oar,k)=>(
+                                            {OAR.map((oar,k)=> (
+                                                 
                                                 <button key={k}
                                                     style={{borderBottom: viewFlags[findItemIndex(i,j)]?.[oar] ? '0.0625rem solid' : '0.0625rem solid transparent'}}
-                                                    onClick={()=>handleView(oar, findItemIndex(i,j))}>{oar}</button>
+                                                    onClick={()=>oar!=='options' ? handleViewTabs(oar, findItemIndex(i,j)) : handleViewTabs(oar, i, j)}>{oar}</button>
+
                                             ))}
                                         </div>
                                         
@@ -783,46 +949,46 @@ const EditMenu = () => {
                                                 </div>
                                             }
                                             {viewFlags[findItemIndex(i,j)]?.['removes'] && 
-                                                    <div className="tab-content">
-                                                        <div className="item-name tab">
-                                                            <span className="item-button">
-                                                                <button className='delete-button'>
-                                                                    <Icon path={mdiPlus} size={0.4}/>
-                                                                </button>
-                                                                <input type='text'
-                                                                    value={newRemove.name}
-                                                                    onChange={(e)=>handleOnChangeTab(e,i,j,null, 'name', 'removes', true)}
-                                                                    onBlur={()=>postNewTab(i,j,'removes')}
-                                                                />
-                                                            </span>
-                                                        </div>
-                                                        
-                                                        {item.removes.length > 0 && 
-                                                            item.removes.map((remove, k)=>{
-                                                                const refKey = `${i}-${j}-${k}`;
-                                                                console.log(refKey)
-                                                                // setActiveAddOnRef(refKey);
-                                                                return (
-                                                                <div className='item-name tab' key={k}>
-                                                                    <span className='item-button tab'>
-                                                                        <button className='delete-button' onClick={()=>handleDeleteTab(i,j,k,'removes')}>
-                                                                            <Icon path={mdiClose} size={0.4}/>
-                                                                        </button>
-                                                                        {!editFlags.sections[i].items[j]?.removes?.[k].name ? 
-                                                                        <span onClick={()=>handleTabFlag(i,j,k,'removes','name')}>{remove.name}</span> : 
-                                                                            <input type='text'
-                                                                                ref={(el)=>removesInputRef.current[handleRefKey(refKey,'removes')]=el}
-                                                                                value={remove.name}
-                                                                                onChange={(e)=>handleOnChangeTab(e,i,j,k,'name', 'removes', false)}
-                                                                                onBlur={()=>handleTabFlag(i,j,k,'removes', 'name')}
-                                                                            />
-                                                                        }
-                                                                    </span>
-                                                                </div>
-                                                            )})
-                                                        }
+                                                <div className="tab-content">
+                                                    <div className="item-name tab">
+                                                        <span className="item-button">
+                                                            <button className='delete-button'>
+                                                                <Icon path={mdiPlus} size={0.4}/>
+                                                            </button>
+                                                            <input type='text'
+                                                                value={newRemove.name}
+                                                                onChange={(e)=>handleOnChangeTab(e,i,j,null, 'name', 'removes', true)}
+                                                                onBlur={()=>postNewTab(i,j,'removes')}
+                                                            />
+                                                        </span>
                                                     </div>
-                                                }
+                                                    
+                                                    {item.removes.length > 0 && 
+                                                        item.removes.map((remove, k)=>{
+                                                            const refKey = `${i}-${j}-${k}`;
+                                                            // console.log(refKey)
+                                                            // setActiveAddOnRef(refKey);
+                                                            return (
+                                                            <div className='item-name tab' key={k}>
+                                                                <span className='item-button tab'>
+                                                                    <button className='delete-button' onClick={()=>handleDeleteTab(i,j,k,'removes')}>
+                                                                        <Icon path={mdiClose} size={0.4}/>
+                                                                    </button>
+                                                                    {!editFlags.sections[i].items[j]?.removes?.[k].name ? 
+                                                                    <span onClick={()=>handleTabFlag(i,j,k,'removes','name')}>{remove.name}</span> : 
+                                                                        <input type='text'
+                                                                            ref={(el)=>removesInputRef.current[handleRefKey(refKey,'removes')]=el}
+                                                                            value={remove.name}
+                                                                            onChange={(e)=>handleOnChangeTab(e,i,j,k,'name', 'removes', false)}
+                                                                            onBlur={()=>handleTabFlag(i,j,k,'removes', 'name')}
+                                                                        />
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                        )})
+                                                    }
+                                                </div>
+                                            }
                                     </div>
                                 </div>
                             ))}
@@ -831,7 +997,7 @@ const EditMenu = () => {
                 ))}
             </div>}
             {openDeleteModal && <ModalDeleteItem item={deleteItem} closeCancel={handleDeleteModal} closeDelete={handleDeleteItem} />}
-            {sectionOptionModal && <ModalOptions item={optionItem} closeCancel={handleSectionOpModal} closeDelete={handleAddOption} />}
+            {optionModal && <ModalOptions item={optionObject} closeCancel={handleOptionModal} closeSubmit={(item)=>handleAddOption(item)} />}
         </>
     )
 }

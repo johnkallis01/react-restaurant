@@ -11,6 +11,7 @@ const DropDownMenu = forwardRef(function DropDownMenu({close}, dropdownRef) {
     const navigate=useNavigate();
     const {menus} = useSelector((state)=>state.menus);
     const handleLink = (data) => {
+        console.log(data)
         navigate(`/menus/${data}`);
         close(false);
     }
@@ -22,7 +23,7 @@ const DropDownMenu = forwardRef(function DropDownMenu({close}, dropdownRef) {
     // if(error) return <p>Error: {error}</p>
     return createPortal(
         <ul className="dropdown-menu" ref={dropdownRef}>
-            <li>
+            <li onClick={()=>handleLink('new')}>
                 New Menu
             </li>
             {menus.map((menu)=>(

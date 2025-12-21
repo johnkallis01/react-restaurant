@@ -26,6 +26,19 @@
     border: 0.1875rem solid black;
     box-shadow: 10px 5px 5px 5px rgb(183, 188, 189);
 }
+.modal.select-item{
+    max-width: 25rem;
+}
+.comment-text{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.comment-text textarea{
+    width: 80%;
+    max-width: 30rem;
+    min-width: 10rem;
+}
 .modal-title{
     display: flex;
     justify-content: space-between;
@@ -35,6 +48,7 @@
 }
 .modal-content{
     flex: 1;
+    border: none;
     border-bottom: 0.0625rem solid black;
 }
 .modal-actions{
@@ -50,32 +64,48 @@
     margin: 0.4rem 0;
     padding: 0 0.3rem;
     justify-content: space-between;
+    height: 1.8rem;
+}
+.tab-titles.select{
+    margin: 0.4rem 0 0 0;
 }
 .tab-titles button{
     border: none;
     margin: 0 0.3rem;
     cursor: pointer;
 }
-.tab-container{
-    padding: 0.3rem;
-    /* height: 100%; */
-    border: 1px solid;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    scrollbar-width: none;
+.modal-content.select{
+    height: 10rem;
+    /* border: 1px solid green; */
+}
+.tab-container.select{
+    padding: 0;
+    border: none;
+    height: 11rem;
+    scrollbar-width: thin;
 }
 .tab-value{
     padding: 0.3rem;
 }
-
-
+.option.select{
+    /* background-color: aquamarine; */
+    padding: 0.3rem;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+}
+.option-name.select{
+    border-bottom: 0.0625rem solid;
+}
+.checkbox.select label{
+    padding-left: 0.2rem;
+}
 /***
     delete modal
 ***/
 .modal-content.delete{
     text-wrap: wrap;
 }
-.text-field{
+.text-field.delete{
     display: flex;
     justify-content: center;
     
@@ -109,10 +139,11 @@
     overflow-y: scroll;
     scrollbar-width: none;
 }
-.text-field{
+.text-field.options{
     /* border: 1px solid blue; */
     width: 15rem;
     /* height: 100%; */
+    height: 2.5rem;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -123,7 +154,7 @@
 .content-row{
     display: flex;
     flex-direction: row;
-    min-height: 3rem;
+    /* min-height: 3rem; */
     /* border: 1px solid peru;  */
     width: 100%;
     justify-content: space-between;
@@ -155,11 +186,14 @@
     justify-content: flex-end;
     align-items: center;
     flex: 1;
+
 }
 .submit-button button{
     padding: 0.2rem;
     height: 2rem;
     border-radius: 0.5rem;
+    width: 4.5rem;
+    text-wrap: nowrap;
 }
 .price{
     /* height: 100%; */
@@ -173,7 +207,7 @@
     height: 1.5rem;
 }
 .content-row.last{
-    border-bottom: 0.0625rem solid;
+    padding-bottom: 0.2rem;
 }
 .content-row.value{
     justify-content: flex-start;
@@ -181,12 +215,17 @@
 .option{
     /* border: 1px solid blue; */
 }
-
+.option-content-group{
+    display: flex;
+    flex-wrap: wrap;
+}
 .option-content{
     margin: 0 0.5rem;
     display: flex;
     text-wrap: nowrap;
+    align-items: center;
 }
+
 @media(max-width: 650px){
     .modal.options{
         min-width: 100vw;
@@ -195,12 +234,8 @@
 @media(max-width: 475px){
     .modal.options{
         height: 90vh;
+        box-shadow: none;
     }
-    /* .content-row{
-        height: 6rem;
-        flex-wrap: wrap;
-        /* border: 1px solid red; */
-    } */
     .content-row.value{
         padding-bottom: 0.3rem;
     }

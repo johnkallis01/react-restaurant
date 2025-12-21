@@ -1,6 +1,14 @@
 import {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
-import '../assets/components/priceInput.css';
+import '../../assets/components/priceInput.css';
+//props:
+// price: string, value of price
+// setPriceOnChange, sets the value of the price
+// handles on blur when there is a show flag
+//
+// 
+
+
 const PriceInput = ({price, setPriceOnChange, handleOnBlur, handlePriceTab}) => {
     const priceRef = useRef(null);
     const [localPrice, setLocalPrice] = useState(price.replace('.',''));
@@ -14,7 +22,7 @@ const PriceInput = ({price, setPriceOnChange, handleOnBlur, handlePriceTab}) => 
     //     localPrice.replace('.','')
     // },[localPrice])
     function moveDecimal(p){
-        console.log('fp',p)
+        // console.log('fp',p)
         p=p.replace('.','')
         let leftHandSide = p.slice(0,-2);
         let rightHandSide = p.slice(-2);
@@ -48,14 +56,17 @@ const PriceInput = ({price, setPriceOnChange, handleOnBlur, handlePriceTab}) => 
     const handleSendData = () => {
         // console.log(formattedPrice)
         setPriceOnChange(moveDecimal(localPrice));
-        handleOnBlur();
+        if(handleOnBlur) handleOnBlur();
         // price='000.00'
     }
     useEffect(() => {
         if(priceRef.current){
             priceRef.current.focus();
         }
-    }, [])
+    }, []);
+    useEffect(() => {
+        setLocalPrice(price.replace('.',''))
+    },[price]);
   return (
     <span className='price-input'>
         <span className="prefix">$</span>

@@ -13,10 +13,16 @@ export class AddOn {
     }
 }
 export class Option {
-    constructor(_id,name="",req=false,conent=[]){
-        this._id =_id || uuidv4();
+    constructor(_id= uuidv4(), name="", req=false, content=[]){
+        this._id =_id;
         this.name = name;
         this.req = req;
-        this.conent = Array.isArray(conent) ? conent : [];
+        this.content = Array.isArray(content) ? content : [];
+    }
+}
+export class OptionValue {
+    constructor(name='', price='000.00'){
+        this.name=name;
+        this.price=price;
     }
 }

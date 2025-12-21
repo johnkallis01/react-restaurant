@@ -1,11 +1,12 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import DisplaySchedule from './DisplaySchedule';
 import ModalSelectItem from './ui/modals/ModalSelectItem';
 import '../assets/pages/menus.css';
+import usePriceFormatter from '../hooks/usePriceFormatter'
 // import {useEffect} from 'react'
 const DisplayMenu = ({menu, order}) => {
-    
+    const {formatPrice} = usePriceFormatter();
     const [openModal, setOpenModal] = useState(false);
     const [modalItem, setModalItem] = useState(null);
     const handleChooseItem =(item) => {
@@ -17,29 +18,32 @@ const DisplayMenu = ({menu, order}) => {
         // console.log(data)
         setOpenModal(data);
     }
+    // useEffect(() => {
+    //     console.log(order)
+    // })
     if(!menu) return <p>No menu data</p>
     return(
         <>
         <div className="menu-page">
             {menu?.days?.length > 0 && <DisplaySchedule days={menu.days} />}
             {menu?.sections?.map(section=>(
-                <div className="section" key={section._id}>
+                <div className="section-container" key={section._id}>
                     <p className='section-name'>{section.name}</p>
-                    <div className="section-container">
+                    <div className="section-body">
                         {section.items.map(item=>(
-                            <div className={`item-container ${order ? '' : 'disabled'}`} 
-                                key={item._id} disabled={!order} 
-                                onClick={()=>handleChooseItem(item)}
+                            <button key={item._id}
+                                className={`item-container ${!order ? 'disabled' : ''}`} 
+                                disabled={!order} 
+                                onClick={order ? () => handleChooseItem(item) : undefined}
                                 >
-                                    {/* style={{cursor: order ? 'pointer' : 'default'}} */}
                                 <p className='item-name'>
                                     <span>{item.name}</span>
-                                    <span>{item.price}</span>
+                                    <span>{formatPrice(item.price)}</span>
                                 </p>
                                 <p className='item-description'>
                                     {item.description}
                                 </p>
-                            </div>
+                            </button>
                         ))}   
                     </div>
                 </div>

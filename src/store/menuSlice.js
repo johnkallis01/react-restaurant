@@ -2,20 +2,21 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 
 // const API_URL = '*/api';
-const apiUrl = import.meta.env.VITE_API_URL;
+// const apiUrl = import.meta.env.VITE_API_URL;
+ const apiUrl = 'http://localhost:5000/api'
 // const API_URL = 'https://react-restaurant-johnkallis01-johnkallis01s-projects.vercel.app/api'
 // const API_URL = 'http://localhost:5000/api';
 // const API_URL = 'https://react-restaurant-virid-nine.vercel.app:5000/api';
 export const fetchMenus = createAsyncThunk('menus/fetchMenus', async (_,{rejectWithValue}) => {
-    console.log('fetch menus')
+    // console.log('fetch menus')
     try{
         // console.log(apiUrl)
         const response = await fetch(`${apiUrl}/menus`);
         // console.log(response.json())
         if(!response.ok) throw new Error('failed to fetch menus');
-        console.log('response');
+        // console.log('response');
         const data = await response.json();
-        console.log('data:', data)
+        // console.log('data:', data)
         return data;
     }catch(err){
         console.log('error');
@@ -23,6 +24,35 @@ export const fetchMenus = createAsyncThunk('menus/fetchMenus', async (_,{rejectW
     }
 
 });
+export const updateMenu = createAsyncThunk('menus/update', async (menu,{rejectWithValue}) => {
+    console.log('update menu')
+    const token = localStorage.getItem('token');
+    console.log(token)
+    console.log(menu)
+    if(token){
+        try{
+            const response = await fetch(`${apiUrl}/menus/${menu._id}`,{
+                method: 'PUT',
+                headers: {
+                    authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(menu)
+            });
+            if(!response.ok){
+                const error = await response.json();
+                throw new Error(error.message || 'menu failed to update')
+            }
+            const data = await response.json();
+            console.log(data)
+            return data;
+        }catch(err){
+            console.error('error updating menu');
+            return rejectWithValue(err.response.data?.messsage||'failed to update menu')
+
+        }
+    }
+})
 // export const fetchMenu = createAsyncThunk('menus/:id', async (id,{rejectWithValue}) => {
 //     console.log('fetch menu by id')
 //     try{

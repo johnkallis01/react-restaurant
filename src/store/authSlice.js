@@ -1,7 +1,7 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 
-// const API_URL = process.env.REACT_APP_API_URL;
-const apiUrl = import.meta.env.VITE_API_URL;
+ const apiUrl = 'http://localhost:5000/api'
+// const apiUrl = import.meta.env.VITE_API_URL;
 // const API_URL = 'https://react-restaurant-johnkallis01-johnkallis01s-projects.vercel.app/api/auth'
 export const registerUser = createAsyncThunk('auth/register', async (userData, {rejectWithValue})=>{
     // console.log(userData)
@@ -22,7 +22,7 @@ export const registerUser = createAsyncThunk('auth/register', async (userData, {
     }
 });
 export const loginUser = createAsyncThunk('auth/login', async (userData, {rejectWithValue})=>{
-    // console.log(userData)
+    console.log(userData)
     console.log(apiUrl)
     try{
         const response = await fetch(`${apiUrl}/auth/login`, {
@@ -32,21 +32,59 @@ export const loginUser = createAsyncThunk('auth/login', async (userData, {reject
             },
             body: JSON.stringify(userData),
         });
-        console.log('x')
+        // console.log('x')
         const data = await response.json();
+        console.log('login data')
         console.log(data)
         if(data.token){
-            localStorage.setItem('token', data.token)
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('token-exp', Math.floor(Date.now() / 1000)+3600)
             window.location.href='/';
+            console.log('token found')
         }
+        return data;
     }catch(err){
         return rejectWithValue(err.response.data?.message||'registeration failed');
     }
 });
+export const verifyToken = createAsyncThunk('auth/verify', async (token, thunkAPI)=>{
+    // console.log('authslice verify', token)
+    const {dispatch, rejectWithValue} = thunkAPI;
+    if(token){
+        try{
+            const response = await fetch(`${apiUrl}/auth/verify`,{
+                method: 'POST',
+                headers:{
+                    'Content-type': 'application/json',
+                    authorization: `Bearer ${token}`
+                }
+            })
+            // console.log('y')
+            const data = await response.json();
+            // console.log(state.user)
+            // console.log(data)
+            if(data.error){
+                throw new Error(data.error)
+            }
+            return data;
+        }catch(err){
+            // console.log('token err')
+            dispatch(logout());
+            return rejectWithValue(err.response.data?.message||'invalid token');
+        }
+    }
+    
+})
 const authSlice = createSlice({
     name: 'auth',
-    initialState: {user: null, token: localStorage.getItem('token')|| null, loading:false, error:  null},
-    reducers: {},
+    initialState: {user: null, token: localStorage.getItem('token')|| null,isAuthenticated: false, loading:false, error:  null},
+    reducers: {
+        logout: (state)=>{
+            state.user = null;
+            state.token = null;
+            localStorage.clear();
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(registerUser.pending, (state) =>{
             state.loading=true;
@@ -60,10 +98,20 @@ const authSlice = createSlice({
         }).addCase(loginUser.rejected, (state,action)=>{
             state.loading=false;
             state.error=action.payload;
-        }).addCase(loginUser.fulfilled, (state)=>{
+        }).addCase(loginUser.fulfilled, (state,action)=>{
+            state.user=action.payload;
+            state.token=localStorage.getItem('token');
+            state.isAuthenticated=true;
+        }).addCase(verifyToken.fulfilled, (state, action)=>{
+            state.user=action.payload;
+            state.token=localStorage.getItem('token');
+            state.isAuthenticated=true;
+        }).addCase(verifyToken.rejected, (state)=>{
             state.user=null;
             state.token=null;
+            state.isAuthenticated=false;
         })
     }
 })
+export const {logout} = authSlice.actions;
 export default authSlice.reducer;
