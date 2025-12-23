@@ -290,10 +290,16 @@ const EditMenu = () => {
         else handleItemFlag(i,j, 'description', false);
     }
     const handleOptionModal = (obj) =>{
-        // console.log(obj)
+        
         if(!optionModal) setOptionObject(obj);
         else setOptionObject(null);
         setOptionModal(!optionModal);
+        console.log(obj)
+        
+        if(!optionModal){
+            console.log(optionModal);
+            
+        }
     }
     /**
      * @param {object} obj item or section object
@@ -321,7 +327,7 @@ const EditMenu = () => {
 
         }else{
             console.log('section')
-            //
+            //needs post to menu
             setMenu(prev=>({
                 ...prev,
                 sections: menu.sections.map(section=>(
@@ -770,7 +776,6 @@ const EditMenu = () => {
                                 <button onClick={()=>handleOptionModal(section)}>
                                     <Icon path={mdiPlus} size={0.4}/>
                                 </button>
-
                                 <label>New Item</label>
                                 <button onClick={()=>handleItemFlag(i,null, 'show', true)}>
                                     <Icon path={mdiPlus} size={0.4}/>

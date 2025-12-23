@@ -10,14 +10,14 @@ import TextField from "../TextField";
 import PriceInput from '../PriceInput';
 import { Option, OptionValue } from '../../../models/Tabs';
 
-const EditOption = ({option=new Option(), addOption, updateOption, isNew=false}) => {
+const EditOption = ({option=new Option(), addOption, updateOption, isNew=false, isItem=false}) => {
     // let initialState = {name: '', price: '000.00'}
     const [newValue, setNewValue] = useState(new OptionValue());
-    
     const [localOption, setLocalOption] = useState({...option})
     const {formatPrice} = usePriceFormatter();
     const [ editOptionName, setEditOptionName] = useState(false);
     const [showValue, setShowValue] = useState(false);
+    // const [isItem, setIsItem] = useState(false)
     /**
      * updates the local Item/Section in the parent &
      * creates a new option object
@@ -30,14 +30,14 @@ const EditOption = ({option=new Option(), addOption, updateOption, isNew=false})
         setEditOptionName(flag)
     },[])
     const handleValueInput = useCallback((str, field) => {
-        console.log(str, field)
+        // console.log(str, field)
         setNewValue((prev) => ({
             ...prev, [field]: str
         }))
     },[])
     const handleAddValue = () => {
-        console.log(localOption)
-        console.log(newValue)
+        // console.log(localOption)
+        // console.log(newValue)
         if(newValue.name.length){
             let value = {
                 name: newValue.name,
@@ -55,7 +55,7 @@ const EditOption = ({option=new Option(), addOption, updateOption, isNew=false})
         
     }
     const handleCheckbox = () => {
-        console.log(localOption.req)
+        // console.log(localOption.req)
         setLocalOption((prev)=>({
             ...prev,
             req: !localOption.req
@@ -79,7 +79,6 @@ const EditOption = ({option=new Option(), addOption, updateOption, isNew=false})
         if(updateOption) updateOption(localOption);
         console.log(localOption)
     }, [localOption]);
-
     useEffect(() => {
         document.querySelector('input[type=text]')?.focus();
         // console.log(document.querySelector('input'))
@@ -168,5 +167,6 @@ EditOption.propTypes={
     updateOption: PropTypes.func,
     isNew: PropTypes.bool,
     addOption: PropTypes.func,
+    isItem: PropTypes.bool,
 }
 export default EditOption;

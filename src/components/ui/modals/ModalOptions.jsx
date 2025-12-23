@@ -9,9 +9,11 @@ const ModalOptions = ({ item, closeCancel, closeSubmit}) => {
     const title = `Add Options to ${item.name}`;
     const [localItem, setLocalItem] = useState(item);
     const [newOptionFlag, setNewOptionFlag] = useState(true);
+    // const [isItem, setIsItem] = useState(false);
     // const [newOption, setNewOption] = useState(new Option());
 
-    const handleUpdateOption=useCallback((option) => {
+    const handleUpdateOption = useCallback((option) => {
+        console.log(!!localItem.section_id)
         setLocalItem(prev=>({
             ...prev,
             options: prev.options.map(op=>(
@@ -20,19 +22,21 @@ const ModalOptions = ({ item, closeCancel, closeSubmit}) => {
         }))
     },[]);
 
-    const handleAddNewOption= useCallback((op) => {
-        console.log(op);
+    const handleAddNewOption = useCallback((op) => {
+        // console.log(op);
+        console.log(!!localItem.section_id)
         setLocalItem(prev=>({
             ...prev,
             options: [...prev.options, op]
         }))
     },[]);
-
+    useEffect(() => {
+        console.log(item.section_id)
+    },[item.section_id])
     useEffect(() => {
         document.querySelector('input').focus();
     },[newOptionFlag]);
     useEffect(() => {
-        console.log(item)
         document.querySelector('input').focus();
         if(item.options.length>0) setNewOptionFlag(false);
         //stop scrolling behind modal
@@ -47,7 +51,7 @@ const ModalOptions = ({ item, closeCancel, closeSubmit}) => {
         <div className='modal-wrapper'>
             <div className="modal options">
                 <div className='modal-title options'>
-                    <span>{title}</span>
+                    <span>{title + !!localItem.section_id}</span>
                     <button onClick={()=>setNewOptionFlag(!newOptionFlag)} disabled={localItem.options.length < 1}>
                         <Icon path={mdiPlus} size={1} />
                     </button>

@@ -31,11 +31,12 @@
 }
 .comment-text{
     display: flex;
-    align-items: center;
-    flex-direction: column;
+    justify-content: center;
 }
 .comment-text textarea{
     width: 80%;
+    max-height: 20rem;
+    min-height: 10rem;
     max-width: 30rem;
     min-width: 10rem;
 }
