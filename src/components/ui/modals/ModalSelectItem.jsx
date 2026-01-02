@@ -1,14 +1,15 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiMinus } from '@mdi/js';
-// import { useDispatch } from 'react-redux';
-
 import PropTypes from 'prop-types';
 import '../../../assets/components/ui/modals.css';
-// import usePriceFormatter from '../hooks/usePriceFormatter'
 import usePriceFormatter from '../../../hooks/usePriceFormatter.js';
+import {addItem} from '../../../store/cartSlice';
+import {useDispatch} from 'react-redux';
+
+
 const ModalSelectItem = ({item, menu, close }) => {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const {formatPrice} = usePriceFormatter();
     const [viewFlags, setViewFlags] = useState({
         options: false,
@@ -70,6 +71,7 @@ const ModalSelectItem = ({item, menu, close }) => {
     }
     const handleSubmit = () => {
         console.log('submit', selectedItem)
+        dispatch(addItem(selectedItem))
         close(false)
     }
     const handleIncQty = () => {

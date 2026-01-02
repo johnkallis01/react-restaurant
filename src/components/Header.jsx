@@ -2,18 +2,23 @@ import { Link, useNavigate} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import DropDownMenu from './DropDownMenu';
 // import { useSelector } from 'react-redux';
+import Cart from './ui/Cart'
 import useClickOutside from '../hooks/useClickOutside';
-import { useDispatch } from 'react-redux';
-import {verifyToken, logout} from '../store/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {logout, verifyToken} from '../store/authSlice';
+import {openCart, closeCart} from '../store/cartSlice';
 import Icon from '@mdi/react';
 import { mdiCart } from '@mdi/js';
 const Header = () => {
     const dispatch= useDispatch();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showDropDown, setShowDropDown] = useState(false);
+
+    const {isCartOpen, error} = useSelector((state)=>state.cart);
+    const { user, isAuthenticated } = useSelector((state) => state.auth);
     // const {user} = useSelector((state)=>state.auth);
     // const token = localStorage.getItem('token');
     const dropdownRef=useClickOutside(()=>setShowDropDown(false));
+    
     // const token = localStorage.getItem('token');
     const navigate=useNavigate();
     const leftLinks = [
@@ -26,37 +31,44 @@ const Header = () => {
     }
     const handleLogout = () => {
         // localStorage.clear();
-        setIsLoggedIn(false);
         dispatch(logout());
         navigate('/login');
     }
+    const handleCartToggle = () => {
+        console.log('cart button',isCartOpen)
+        if(!isCartOpen){
+            dispatch(openCart())
+        }else{
+            dispatch(closeCart());
+           
+        }
+        
+    }
     useEffect(() => {
         const verifyTokenInterval = () => {
-            if((Math.floor(Date.now() / 1000) >= localStorage.getItem('token-exp')) && isLoggedIn){
+            const tokenExp = Number(localStorage.getItem('token-exp'));
+            if(Date.now() / 1000 >= tokenExp && isAuthenticated){
                 console.log('past exp')
-                try{
-                    dispatch(verifyToken(localStorage.getItem('token')));
-                }catch(err){
-                    console.error('token not verifed', err);
-                    // token.Object.assign(null);
-                    setIsLoggedIn(false)
-                    dispatch(logout())
-                }
+                dispatch(verifyToken(tokenExp))
+                    .unwrap()
+                    .catch(() => {
+                        dispatch(logout());
+                    });
             }
         }
         const interval = setInterval(verifyTokenInterval, 10000);
         return ()=> clearInterval(interval);
         // console.log(isAuthenticated)
-    }, [dispatch, isLoggedIn]);
+    }, [dispatch]);
     //runs once
     useEffect(() => {
         if(localStorage.getItem('token')){
             try{
                 dispatch(verifyToken(localStorage.getItem('token')));
-                setIsLoggedIn(true);
+
             }catch(err){
                 console.error('token not verifed', err);
-                setIsLoggedIn(false);
+
                 dispatch(logout());
             }
         }
@@ -68,10 +80,10 @@ const Header = () => {
             <nav>
                 <ul>
                     <div className='link-group left'>
-                        <button className='cart-button'>
+                        <button className='cart-button' disabled={isCartOpen} onClick={() => handleCartToggle()}>
                            <Icon path={mdiCart} size={1}></Icon> 
                         </button>
-                        
+                        {isCartOpen && <Cart/>}
                         {leftLinks.map(link=>(
                             <li key={link.name}>
                                 <Link to={link.to}>{link.name}</Link>
@@ -79,12 +91,12 @@ const Header = () => {
                         ))}
                     </div>
                     <div className='link-group right'>
-                        {isLoggedIn && <li onClick={handleShowDropDown}>Edit Menu</li>}
+                        {isAuthenticated  && <li onClick={handleShowDropDown}>Edit Menu</li>}
                         {showDropDown && <DropDownMenu ref={dropdownRef} close={setShowDropDown}/>}
-                        {isLoggedIn ? 
+                        {isAuthenticated  ? 
                         <li onClick={handleLogout}> logout </li> : 
                         <li> <Link to="/login">Login</Link></li>}
-                        {!isLoggedIn && <li><Link to="/register">Register</Link></li>}
+                        {!isAuthenticated  && <li><Link to="/register">Register</Link></li>}
                     </div>
                 </ul>
             </nav>

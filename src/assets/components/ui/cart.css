@@ -1,0 +1,47 @@
+.cart{
+    box-sizing: border-box;
+    position: absolute;
+    top: 2rem;
+    color: black;
+    left: calc(0rem);
+    width: 25rem;
+    height: 33.75rem;
+    background-color: azure;
+    z-index: 12;
+    cursor: pointer;
+    border: 0.1rem solid black;
+    display: flex;
+    flex-direction: column;
+}
+.cart-head{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.4rem;
+    border-bottom: 0.1rem solid black;
+}
+.cart-head h6{
+    padding: 0.4rem;
+}
+.cart-body{
+    /* height: 100%; */
+    flex: 1;
+    padding: 0.3rem;
+}
+.cart-body li{
+    display: flex;
+    justify-content: space-between;
+}
+.cart-foot{
+    display:flex;
+    justify-content: space-between;
+    align-items: end;
+    margin: 0.5rem;
+}
+.cart-foot button{
+    padding: 0.2rem;
+}
+.dotted-line{
+    flex: 1;
+    border-bottom: 0.1rem dotted black;
+}

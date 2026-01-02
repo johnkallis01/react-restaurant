@@ -164,19 +164,19 @@ const EditMenu = () => {
                         ...prev,
                         [field]:value
                     }
-                    console.log(updated)
+                    // console.log(updated)
                     return updated;
                 })
-                console.log(newAddOn)
+                // console.log(newAddOn)
             }
             else if(tab==='removes'){
-                console.log('is new, removes')
-                console.log(value)
+                // console.log('is new, removes')
+                // console.log(value)
                 setNewRemove({
                     name: value
                 })
             }
-            console.log(newAddOn)
+            // console.log(newAddOn)
         }
         else{
             //assigns the input to the existing tab object
@@ -210,7 +210,7 @@ const EditMenu = () => {
      * @param {String} tab tab type 'addOns' or 'price'
      */
     const postNewTab = (i,j,tab)=>{
-        console.log(newAddOn);
+        // console.log(newAddOn);
         //adds the new data to the existing menu state
         setMenu((prev)=>({
             ...prev,
@@ -294,10 +294,10 @@ const EditMenu = () => {
         if(!optionModal) setOptionObject(obj);
         else setOptionObject(null);
         setOptionModal(!optionModal);
-        console.log(obj)
+        // console.log(obj)
         
         if(!optionModal){
-            console.log(optionModal);
+            // console.log(optionModal);
             
         }
     }
@@ -307,11 +307,11 @@ const EditMenu = () => {
      *  dispatches update to redux/database
      */
     const handleAddOption = (obj)=>{
-        console.log(obj);
+        // console.log(obj);
         let isItem = obj.section_id ? true : false;
-        console.log(isItem)
+        // console.log(isItem)
         if(isItem){
-            console.log('item')
+            // console.log('item')
             setMenu(prev=>({
                 ...prev,
                 sections: menu.sections.map(section=>(
@@ -326,7 +326,7 @@ const EditMenu = () => {
             }))
 
         }else{
-            console.log('section')
+            // console.log('section')
             //needs post to menu
             setMenu(prev=>({
                 ...prev,
@@ -621,7 +621,7 @@ const EditMenu = () => {
         })) 
     }
     useEffect(() => {
-        console.log(menu)
+        // console.log(menu)
     },[menu])
     // useEffect(() => {
     //     console.log(itemOptionModal)

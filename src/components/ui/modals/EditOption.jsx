@@ -10,7 +10,7 @@ import TextField from "../TextField";
 import PriceInput from '../PriceInput';
 import { Option, OptionValue } from '../../../models/Tabs';
 
-const EditOption = ({option=new Option(), addOption, updateOption, isNew=false, isItem=false}) => {
+const EditOption = ({option=new Option(), addOption, updateOption, isNew=false}) => {
     // let initialState = {name: '', price: '000.00'}
     const [newValue, setNewValue] = useState(new OptionValue());
     const [localOption, setLocalOption] = useState({...option})
@@ -77,7 +77,7 @@ const EditOption = ({option=new Option(), addOption, updateOption, isNew=false, 
     },[])
     useEffect(() => {
         if(updateOption) updateOption(localOption);
-        console.log(localOption)
+        // console.log(localOption)
     }, [localOption]);
     useEffect(() => {
         document.querySelector('input[type=text]')?.focus();
