@@ -25,8 +25,8 @@ const ModalSelectItem = ({item, menu, close }) => {
             comments: false,
             [tab]: true
         });
-        console.log(viewFlags)
-        console.log(tab, viewFlags[tab])
+        // console.log(viewFlags)
+        // console.log(tab, viewFlags[tab])
     }
     const [selectedItem, setSelectedItem] = useState({
         name: item.name,
@@ -43,25 +43,28 @@ const ModalSelectItem = ({item, menu, close }) => {
             _id: menu._id
         }
     });
-    const handleAddOnCheckbox = ()=>{
-
+    const handleAddOnCheckbox = (addOn)=>{
+        console.log('checkbox1',selectedItem)
+        selectedItem.price = String(Number(selectedItem.price)+Number(addOn.price));
+        console.log('checkbox2',selectedItem)
+        selectedItem.addOns.choices.push(addOn)
     }
     const handleOptionsCheckbox = (foo, i) => {
-        console.log('handleOpChecks', i , foo)
-        console.log(selectedItem.options.options[i])
-        console.log(selectedItem.options.choices)
-        selectedItem.options.choices.push({...foo, option_id: selectedItem.options.options[i]._id })
+        // console.log('handleOpChecks', i , foo)
+        // console.log(selectedItem.options.options[i])
+        // console.log(selectedItem.options.choices)
+        selectedItem.options.choices.push({...foo, option_id: selectedItem.options.options[i]._id, option_name: selectedItem.options.options[i].name })
         selectedItem.options.choices.filter(choice=>choice._id===foo._id);
-        console.log('updated',selectedItem)
+        // console.log('updated',selectedItem)
         
-        console.log(selectedItem.options.choices)
+        // console.log(selectedItem.options.choices)
 
         // selectedItem.options.options[i]._id===
         //add to choices and check for choice of same option
 
     }
     const handleOnChangeComments = (e) => {
-        console.log(e.target.value)
+        // console.log(e.target.value)
         setSelectedItem(prev=>({
             ...prev, comments: e.target.value
         }))
@@ -70,7 +73,7 @@ const ModalSelectItem = ({item, menu, close }) => {
         close(false);
     }
     const handleSubmit = () => {
-        console.log('submit', selectedItem)
+        // console.log('submit', selectedItem)
         dispatch(addItem(selectedItem))
         close(false)
     }
@@ -148,7 +151,7 @@ const ModalSelectItem = ({item, menu, close }) => {
                         {OARC.current.map((oarc,i)=>{
                             if(!viewFlags[oarc]){ return null; }
                             let content;
-                            console.log('content', selectedItem.options)
+                            // console.log('content', selectedItem.options)
                             if(oarc==='options'){
                                 content=(
                                     <div className='option select'>
@@ -179,7 +182,7 @@ const ModalSelectItem = ({item, menu, close }) => {
                                     <div className='option select'>
                                     {selectedItem.addOns.options.map(addOn=>
                                         <div className="checkbox select" key={addOn._id}>
-                                            <input type='checkbox' name={addOn.name} onChange={handleAddOnCheckbox}/>
+                                            <input type='checkbox' name={addOn.name} onChange={(handleAddOnCheckbox(addOn))}/>
                                             <label htmlFor={addOn.name}>{addOn.name + (addOn.price>0 ? ' - '+formatPrice(addOn.price) : '')}</label>
                                         </div>
                                     )}

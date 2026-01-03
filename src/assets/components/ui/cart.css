@@ -32,7 +32,16 @@
     display: flex;
     justify-content: space-between;
 }
-.cart-foot{
+.cart-item-notes{
+    margin-left: 0.4rem;
+}
+.cart-foot-summary{
+    margin: 0.5rem;
+}
+.cart-foot-summary li{
+    display: flex;
+}
+.cart-foot-actions{
     display:flex;
     justify-content: space-between;
     align-items: end;

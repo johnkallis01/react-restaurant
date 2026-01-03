@@ -20,8 +20,11 @@ const cartSlice = createSlice({
         addItem : (state, action) => {
             const item = action.payload;
             state.items.push(item);
+            console.log('add item', item)
             state.subTotal+=Number(item.price);
-            console.log('add item')        
+            state.total=state.subTotal*1.06;
+            state.tax=state.subTotal*0.06;
+                   
         },
         removeItem : (state,action)=>{
             const index = action.payload;
@@ -29,15 +32,15 @@ const cartSlice = createSlice({
         },
         closeCart: (state)=>{
             state.isCartOpen = false;
-            console.log('close cart')
+            // console.log('close cart')
         },
         openCart: (state)=>{
             state.isCartOpen=true;
-            console.log('open cart')
+            // console.log('open cart')
         },
         toggleCart: (state) =>{
             state.isCartOpen = !state.isCartOpen;
-            console.log('toggle')
+            // console.log('toggle')
         },
         clearCart: (state)=>{
             state.items=[];
