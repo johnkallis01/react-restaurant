@@ -33,10 +33,10 @@ const Cart = forwardRef(function Cart() {
                   <span>Comments:</span>
                   {item.comments}
               </div>}
-              {item.options?.choices.map((choice,index)=>(
+              {item.options.options.map((option,index)=>(
                 <li key={index}>
-                  {choice.option_name + ": "}
-                  {choice.name}
+                  <span>{option.choice.optionName ? option.choice.optionName + ": " : null}</span>
+                  <span>{option.choice.name}</span>
                 </li>))}
             </ul>
             <ul className="cart-item-notes">

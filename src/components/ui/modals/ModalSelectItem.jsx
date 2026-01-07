@@ -1,16 +1,16 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import {useDispatch} from 'react-redux';
+import usePriceFormatter from '../../../hooks/usePriceFormatter.js';
+import {addItem} from '../../../store/cartSlice';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiMinus } from '@mdi/js';
 import PropTypes from 'prop-types';
 import '../../../assets/components/ui/modals.css';
-import usePriceFormatter from '../../../hooks/usePriceFormatter.js';
-import {addItem} from '../../../store/cartSlice';
-import {useDispatch} from 'react-redux';
-
 
 const ModalSelectItem = ({item, menu, close }) => {
     const dispatch = useDispatch();
     const {formatPrice} = usePriceFormatter();
+    const [isDisabled, setIsDisabled] = useState(true);
     const [viewFlags, setViewFlags] = useState({
         options: false,
         addOns: false,
@@ -33,9 +33,10 @@ const ModalSelectItem = ({item, menu, close }) => {
         price: item.price,
         addOns: {options: item.addOns.map(opt => ({ ...opt, checked: false })), choices: []},
         removes: {options:item.removes.map(opt => ({ ...opt, checked: false })), choices: []},
-        options: {options: item.options.map(opt => ({ ...opt,
-             
-            checked: false })), choices: []},
+        options: {options: item.options.map(opt => ({ name: opt.name, req: opt.req, _id: opt._id, content: opt.content.map(content=>({
+            ...content, checked: false, optionName: opt.name
+        })),choice: {}
+        }))},
         comments: '', 
         qty: 1,
         menu: {
@@ -48,20 +49,6 @@ const ModalSelectItem = ({item, menu, close }) => {
         selectedItem.price = String(Number(selectedItem.price)+Number(addOn.price));
         console.log('checkbox2',selectedItem)
         selectedItem.addOns.choices.push(addOn)
-    }
-    const handleOptionsCheckbox = (foo, i) => {
-        // console.log('handleOpChecks', i , foo)
-        // console.log(selectedItem.options.options[i])
-        // console.log(selectedItem.options.choices)
-        selectedItem.options.choices.push({...foo, option_id: selectedItem.options.options[i]._id, option_name: selectedItem.options.options[i].name })
-        selectedItem.options.choices.filter(choice=>choice._id===foo._id);
-        // console.log('updated',selectedItem)
-        
-        // console.log(selectedItem.options.choices)
-
-        // selectedItem.options.options[i]._id===
-        //add to choices and check for choice of same option
-
     }
     const handleOnChangeComments = (e) => {
         // console.log(e.target.value)
@@ -89,8 +76,27 @@ const ModalSelectItem = ({item, menu, close }) => {
             qty: prev.qty > 1 ? prev.qty-1 : prev.qty,
         }))
     }
+    const handleOptionsCheckbox = (content, index) => {
+        console.log('handle options checkbox',content)
+        console.log(selectedItem.options.options[index])
+        // selectedItem.options.options[index].choice=content;
+        setSelectedItem((prev)=>{
+            const optionsCopy=[...prev.options.options];
+            optionsCopy[index]={
+                ...optionsCopy[index],
+                choice: optionsCopy[index].choice === content ? null : content,
+            }
+            return {
+                ...prev,
+                options: {
+                    ...prev.options,
+                    options: optionsCopy,
+                }
+            }
+        })
+    }
     const OARC = useRef(['options','addOns','removes','comments']);
-    //disable scrolling behind modal
+   //focus the text area on the comments tab
     useEffect(() => {
         // console.log(document.querySelector('textarea'));
         let comment = document.querySelector('textarea')
@@ -99,12 +105,23 @@ const ModalSelectItem = ({item, menu, close }) => {
            comment.setSelectionRange(comment.value.length, comment.value.length);
         }
     },[viewFlags])
+    
+    //disable scrolling behind modal
     useEffect(() => {
+        //need to add back scroll bar
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
         document.documentElement.style.overflow = 'hidden';
+        document.documentElement.style.paddingRight = `${scrollbarWidth}px`;
         return () => {
             document.documentElement.style.overflow = 'auto';
+            document.documentElement.style.paddingRight = 0;
         } 
-    },[])
+    },[]);
+    // useEffect(() => {
+    //     selectedItem.options.forEach((option) => (
+            
+    //     ))
+    // },[])
     // useEffect(() => {
     //     dispatch(setCartItem({
     //         _id: item._id,
@@ -119,6 +136,13 @@ const ModalSelectItem = ({item, menu, close }) => {
         handleTabFlags(OARC.current[0])
         // console.log(viewFlags)
     }, []);
+    useEffect(() => {
+        console.log('useEffect for isDisabled')
+        const allRequiredFilled = selectedItem.options.options.every((option) =>
+            !option.req || (option.choice && Object.keys(option.choice).length > 0)
+        );
+        setIsDisabled(!allRequiredFilled);
+    },[selectedItem.options.options])
     return (
         <>
          <div className='modal-wrapper'>
@@ -151,17 +175,18 @@ const ModalSelectItem = ({item, menu, close }) => {
                         {OARC.current.map((oarc,i)=>{
                             if(!viewFlags[oarc]){ return null; }
                             let content;
-                            // console.log('content', selectedItem.options)
+                            console.log('content', selectedItem)
                             if(oarc==='options'){
+                                // let checkboxValue = 
                                 content=(
                                     <div className='option select'>
                                     {selectedItem.options.options.map((option, opIndex)=>
                                         <div key={option._id}>
                                             <span className='option-name select'>{option.name}</span>
-                                            {option.content?.map((value,i)=>(
+                                            {option.content?.map((content,i)=>(
                                                 <div className="checkbox select" key={i}>
-                                                    <input type='checkbox' value={selectedItem.options} name={value.name} onChange={(e) => handleOptionsCheckbox(value,opIndex, e)}/>
-                                                    <label htmlFor={value.name}>{value.name}</label>
+                                                    <input type='checkbox' name={content.name} checked={content===option.choice} onChange={() => handleOptionsCheckbox(content, opIndex)}/>
+                                                    <label htmlFor={content.name}>{content.name}</label>
                                                 </div>
                                                 
                                             ))}
@@ -202,7 +227,7 @@ const ModalSelectItem = ({item, menu, close }) => {
                     </div>
                 </div>
                 <div className='modal-actions'>
-                    <button className='btn' onClick={handleSubmit}>Submit</button>
+                    <button className='btn' onClick={handleSubmit} disabled={isDisabled}>Submit</button>
                     <button className='btn' onClick={handleCancel}>Cancel</button>
                 </div>
             </div>

@@ -35,6 +35,13 @@
 .cart-item-notes{
     margin-left: 0.4rem;
 }
+.cart-item-notes li{
+    display: flex;
+    justify-content: start;
+}
+.cart-item-notes span{
+    padding-right: 1rem;
+}
 .cart-foot-summary{
     margin: 0.5rem;
 }
