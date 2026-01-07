@@ -48,9 +48,10 @@ export const loginUser = createAsyncThunk('auth/login', async (userData, {reject
     }
 });
 export const verifyToken = createAsyncThunk('auth/verify', async (token, thunkAPI)=>{
-    // console.log('authslice verify', token)
+    console.log('authslice verify')
     const {dispatch, rejectWithValue} = thunkAPI;
     if(token){
+        console.log('if token',token)
         try{
             const response = await fetch(`${apiUrl}/auth/verify`,{
                 method: 'POST',
@@ -59,11 +60,12 @@ export const verifyToken = createAsyncThunk('auth/verify', async (token, thunkAP
                     authorization: `Bearer ${token}`
                 }
             })
-            // console.log('y')
+            console.log('y')
             const data = await response.json();
             // console.log(state.user)
-            // console.log(data)
+            console.log(data)
             if(data.error){
+                console.log(' throw error')
                 throw new Error(data.error)
             }
             return data;
