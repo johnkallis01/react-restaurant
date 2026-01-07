@@ -2,14 +2,32 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import authRoutes from './api/auth.js';
+import authVerify from './api/auth/verify.js';
+import authLogin from './api/auth/login.js';
 import menuRoutes from './api/menus.js';
 import cookieParser from "cookie-parser";
+const allowedOrigins = [
+  "https://react-restaurant-virid-nine.vercel.app",
+  "http://localhost:5173",
+];
 const corsOptions = {
-    origin: ["https://restaurant-server-umber.vercel.app"], credentials: true
-}
+  origin: [
+    "https://react-restaurant-virid-nine.vercel.app",
+    "http://localhost:5173"
+  ],
+  credentials: true,
+};
 const app = express();
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: (origin, callback)=> {
+        if(!origin || allowedOrigins.includes(origin)){
+            callback(null, true);
+        } else {
+            callback(new Error("cors not allowed"));
+        }
+    }, credentials: true,
+}));
+// app.options("*", cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 dotenv.config();
@@ -37,5 +55,7 @@ app.listen('5000', () => {
     console.log('server is running on port 5000')
 });
 app.use('/api/menus', menuRoutes);
-app.use('/api/auth', authRoutes);
+// app.use('/api/auth', authRoutes);
+// app.post('/api/auth/verify', authVerify);
+// app.post('/api/auth/login', authLogin);
 export default app;

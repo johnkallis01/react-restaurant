@@ -27,7 +27,6 @@ export const loginUser = createAsyncThunk('auth/login', async (userData, {reject
     try{
         const response = await fetch(`${apiUrl}/auth/login`, {
             method: 'POST',
-            credentials: "include",
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -56,7 +55,6 @@ export const verifyToken = createAsyncThunk('auth/verify', async (token, thunkAP
         try{
             const response = await fetch(`${apiUrl}/auth/verify`,{
                 method: 'POST',
-                credentials: "include",
                 headers:{
                     'Content-type': 'application/json',
                     Authorization: `Bearer ${token}`
