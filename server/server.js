@@ -4,12 +4,14 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import authRoutes from './api/auth.js';
 import menuRoutes from './api/menus.js';
+import cookieParser from "cookie-parser";
 const corsOptions = {
     origin: ["https://restaurant-server-umber.vercel.app"], credentials: true
 }
 const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 dotenv.config();
 const connectDB = async () => {
     // console.log(process.env)

@@ -20,7 +20,7 @@ export default function App(){
     useEffect(() => {
         const token = localStorage.getItem('token');
         if(token){
-            console.log('send verify')
+            console.log('send verify', token)
             dispatch(verifyToken(token));
         }
     },[dispatch]);
