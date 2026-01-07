@@ -14,10 +14,11 @@ const DisplayMenu = ({menu, order}) => {
         console.log('handle choose item', item, section)
         const newItem = {
             ...item,
-            options: section.options?.length & section.options.map(option=>({
+            options: section.options?.length ? section.options.map(option=>({
                 ...option, choice: {}
-            }))
+            })) : [...item.options]
         }
+        console.log('new item', newItem)
         setModalItem(newItem);
         setOpenModal(true);
         

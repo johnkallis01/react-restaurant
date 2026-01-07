@@ -34,7 +34,7 @@ const ModalSelectItem = ({item, menu, close }) => {
         addOns: {options: item.addOns.map(opt => ({ ...opt, checked: false })), choices: []},
         removes: {options:item.removes.map(opt => ({ ...opt, checked: false })), choices: []},
         options: {options: item.options.map(opt => ({ name: opt.name, req: opt.req, _id: opt._id, content: opt.content.map(content=>({
-            ...content, checked: false, optionName: opt.name
+            ...content, optionName: opt.name
         })),choice: {}
         }))},
         comments: '', 
@@ -105,6 +105,7 @@ const ModalSelectItem = ({item, menu, close }) => {
            comment.setSelectionRange(comment.value.length, comment.value.length);
         }
     },[viewFlags])
+    
     //disable scrolling behind modal
     useEffect(() => {
         const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -163,6 +164,7 @@ const ModalSelectItem = ({item, menu, close }) => {
                             let content;
                             console.log('content', selectedItem)
                             if(oarc==='options'){
+                                // let checkboxValue = 
                                 content=(
                                     <div className='option select'>
                                     {selectedItem.options.options.map((option, opIndex)=>
