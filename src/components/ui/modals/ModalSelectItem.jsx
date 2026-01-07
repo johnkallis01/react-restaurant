@@ -77,8 +77,8 @@ const ModalSelectItem = ({item, menu, close }) => {
         }))
     }
     const handleOptionsCheckbox = (content, index) => {
-        console.log('handle options checkbox',content)
-        console.log(selectedItem.options.options[index])
+        // console.log('handle options checkbox',content)
+        // console.log(selectedItem.options.options[index])
         // selectedItem.options.options[index].choice=content;
         setSelectedItem((prev)=>{
             const optionsCopy=[...prev.options.options];
@@ -105,30 +105,16 @@ const ModalSelectItem = ({item, menu, close }) => {
            comment.setSelectionRange(comment.value.length, comment.value.length);
         }
     },[viewFlags])
-    
     //disable scrolling behind modal
     useEffect(() => {
-        //need to add back scroll bar
         const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-        document.documentElement.style.overflow = 'hidden';
-        document.documentElement.style.paddingRight = `${scrollbarWidth}px`;
+        document.documentElement.style.overflow = 'hidden'; //freeze scrolling
+        document.documentElement.style.paddingRight = `${scrollbarWidth}px`; //removes page jump
         return () => {
-            document.documentElement.style.overflow = 'auto';
-            document.documentElement.style.paddingRight = 0;
+            document.documentElement.style.overflow = 'auto'; //reset scrolling
+            document.documentElement.style.paddingRight = 0; //reset page size
         } 
     },[]);
-    // useEffect(() => {
-    //     selectedItem.options.forEach((option) => (
-            
-    //     ))
-    // },[])
-    // useEffect(() => {
-    //     dispatch(setCartItem({
-    //         _id: item._id,
-    //         name: item.name,
-    //         price: item.price,
-    //     }))
-    // })
     useMemo(() => {
         // console.log('useeffect')
         OARC.current=OARC.current.filter(oarc=>(item[oarc]?.length > 0 || oarc==='comments'))
@@ -137,7 +123,7 @@ const ModalSelectItem = ({item, menu, close }) => {
         // console.log(viewFlags)
     }, []);
     useEffect(() => {
-        console.log('useEffect for isDisabled')
+        // console.log('useEffect for isDisabled')
         const allRequiredFilled = selectedItem.options.options.every((option) =>
             !option.req || (option.choice && Object.keys(option.choice).length > 0)
         );
@@ -177,7 +163,6 @@ const ModalSelectItem = ({item, menu, close }) => {
                             let content;
                             console.log('content', selectedItem)
                             if(oarc==='options'){
-                                // let checkboxValue = 
                                 content=(
                                     <div className='option select'>
                                     {selectedItem.options.options.map((option, opIndex)=>

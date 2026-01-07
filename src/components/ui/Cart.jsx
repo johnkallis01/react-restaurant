@@ -16,7 +16,7 @@ const Cart = forwardRef(function Cart() {
   return createPortal(
     <div className="cart" ref={cartRef}>
       <div className="cart-head">
-        <h6>Name's Cart</h6>
+        <h6>{'blank\'s Cart'}</h6>
         <h6>Total: {formatPrice(String(cart.total))}</h6>
       </div>
       <ul className='cart-body'>

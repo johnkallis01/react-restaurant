@@ -10,9 +10,17 @@ const DisplayMenu = ({menu, order}) => {
     const {formatPrice} = usePriceFormatter();
     const [openModal, setOpenModal] = useState(false);
     const [modalItem, setModalItem] = useState(null);
-    const handleChooseItem =(item) => {
+    const handleChooseItem =(item, section) => {
+        console.log('handle choose item', item, section)
+        const newItem = {
+            ...item,
+            options: section.options?.length & section.options.map(option=>({
+                ...option, choice: {}
+            }))
+        }
+        setModalItem(newItem);
         setOpenModal(true);
-        setModalItem(item);
+        
         // console.log('click', openModal)
     }
     const handleCloseModal = (data) => {
@@ -35,7 +43,7 @@ const DisplayMenu = ({menu, order}) => {
                             <button key={item._id}
                                 className={`item-container ${!order ? 'disabled' : ''}`} 
                                 disabled={!order} 
-                                onClick={order ? () => handleChooseItem(item) : undefined}
+                                onClick={order ? () => handleChooseItem(item, section) : null}
                                 >
                                 <p className='item-name'>
                                     <span>{item.name}</span>

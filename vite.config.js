@@ -8,7 +8,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api': 'https://restaurant-server-umber.vercel.app/api',
+      '/api': 'https://restaurant-server-umber.vercel.app',
     },
   },
   plugins: [react()],
