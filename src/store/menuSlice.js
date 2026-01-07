@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 
 // const API_URL = '*/api';
-// const apiUrl = import.meta.env.VITE_API_URL;
- const apiUrl = 'http://localhost:5000/api'
+const apiUrl = import.meta.env.VITE_API_URL;
+//  const apiUrl = 'http://localhost:5000/api'
 // const API_URL = 'https://react-restaurant-johnkallis01-johnkallis01s-projects.vercel.app/api'
 // const API_URL = 'http://localhost:5000/api';
 // const API_URL = 'https://react-restaurant-virid-nine.vercel.app:5000/api';
