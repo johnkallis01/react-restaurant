@@ -16,14 +16,14 @@ import {verifyToken} from './store/authSlice';
 import store from './store/store';
 import Register from "./pages/Register";
 export default function App(){
-    const dispatch = useDispatch();
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if(token){
-            console.log('send verify', token)
-            dispatch(verifyToken(token));
-        }
-    },[dispatch]);
+    // const dispatch = useDispatch();
+    // useEffect(() => {
+    //     const token = localStorage.getItem('token');
+    //     if(token){
+    //         console.log('send verify', token)
+    //         dispatch(verifyToken(token));
+    //     }
+    // },[dispatch]);
     useEffect(() => {
         sessionStorage.setItem('active', 'true');
         const handleBeforeUnload = () => {

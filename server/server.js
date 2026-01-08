@@ -2,21 +2,21 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import authVerify from './api/auth/verify.js';
-import authLogin from './api/auth/login.js';
+// import authVerify from './api/auth/verify.js';
+// import authLogin from './api/auth/login.js';
 import menuRoutes from './api/menus.js';
-import cookieParser from "cookie-parser";
+// import cookieParser from "cookie-parser";
 const allowedOrigins = [
   "https://react-restaurant-virid-nine.vercel.app",
   "http://localhost:5173",
 ];
-const corsOptions = {
-  origin: [
-    "https://react-restaurant-virid-nine.vercel.app",
-    "http://localhost:5173"
-  ],
-  credentials: true,
-};
+// const corsOptions = {
+//   origin: [
+//     "https://react-restaurant-virid-nine.vercel.app",
+//     "http://localhost:5173"
+//   ],
+//   credentials: true,
+// };
 const app = express();
 app.use(cors({
     origin: (origin, callback)=> {
@@ -29,7 +29,7 @@ app.use(cors({
 }));
 // app.options("*", cors(corsOptions));
 app.use(express.json());
-app.use(cookieParser());
+// app.use(cookieParser());
 dotenv.config();
 const connectDB = async () => {
     // console.log(process.env)
@@ -45,9 +45,9 @@ const connectDB = async () => {
     }
 }
 connectDB();
-// app.get('/', (req, res)=>{
-//     res.send("connected to server")
-// });
+app.get('/', (req, res)=>{
+    res.send("connected to the server")
+});
 
 
 
