@@ -61,21 +61,21 @@ const Header = () => {
         // console.log(isAuthenticated)
     }, [dispatch]);
     //runs once
-    // useEffect(() => {
-    //     if(localStorage.getItem('token')){
-    //         console.log('token check')
-    //         try{
-    //             dispatch(verifyToken(localStorage.getItem('token')));
+    useEffect(() => {
+        if(localStorage.getItem('token')){
+            console.log('token check')
+            try{
+                dispatch(verifyToken(localStorage.getItem('token')));
 
-    //         }catch(err){
-    //             console.error('token not verifed', err);
+            }catch(err){
+                console.error('token not verifed', err);
 
-    //             dispatch(logout());
-    //         }
-    //          console.log('end')
-    //     }
+                dispatch(logout());
+            }
+             console.log('end')
+        }
        
-    // },[])
+    },[])
     return (
     <>
         <header>
