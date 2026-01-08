@@ -63,6 +63,7 @@ const Header = () => {
     //runs once
     // useEffect(() => {
     //     if(localStorage.getItem('token')){
+    //         console.log('token check')
     //         try{
     //             dispatch(verifyToken(localStorage.getItem('token')));
 
@@ -71,8 +72,9 @@ const Header = () => {
 
     //             dispatch(logout());
     //         }
+    //          console.log('end')
     //     }
-    //     // console.log(user)
+       
     // },[])
     return (
     <>

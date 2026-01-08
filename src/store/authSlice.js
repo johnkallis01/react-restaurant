@@ -92,15 +92,16 @@ export const verifyToken = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-
+    const data = await response.json();
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Token verification failed");
       }
 
-      const data = await response.json();
+      
       return data;
     } catch (err) {
+        console.log('authslice logout')
       dispatch(logout());
       return rejectWithValue(err.message || "Invalid token");
     }
